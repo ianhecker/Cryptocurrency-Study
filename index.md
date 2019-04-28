@@ -4,7 +4,7 @@ This paper serves as a source of compliation for languages used to implement sma
     + And if they dont use Solidity, can they still compile down into Ethereum bytecode? 
 
 ## Ethereum Smart Contracts
-Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
+Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
 Languages have been written, such as [Bitcoin Script](#bitcoin\ script), [Serpent](#ethereum:\ serpent), [Vyper](#ethereum:\ vyper), [Solidity](#solidity) that utilize compilers to change high-level code down into the necessary assembly language, often times EVM Bytecode. 
 
@@ -19,10 +19,10 @@ Bitcoin script is a rather simple language for implementing smart contracts. Val
 Ethereum offered a Turing-complete language, Serpent, to implement contracts in. This language allowwed loops, which presented both benefits and drawbacks. Among drawbacks, chiefly was the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
 
 ### Ethereum: Vyper
-The creators of Ethereum created a new "pythonic" language called Vyper after Serpent. [[2]](#references)
+Ethereum supports an open-source project of a new "pythonic" language called Vyper. This language came after the creation of Serpent. [[2]](#references)
 
 ### Solidity
-Solidity has become the forefront of smart contract languages. 
+Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
 
 
