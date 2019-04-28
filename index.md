@@ -1,16 +1,28 @@
+# Smart Contract Implementation Languages
+This paper serves as a source of compliation for languages used to implement smart contracts, and information about them. It also answers the questions:
++ What smart contract implementations are out there?
+    + And if they dont use Solidity, can they still compile down into Ethereum bytecode? 
 
-# What other smart contracts are out there?
-## And If they dont use solidity, can they still compile down into ethereum bytecode? 
+## Ethereum Smart Contracts
+Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
+
+Languages have been written, such as [Bitcoin Script](#bitcoin\ script), [Serpent](#serpent), [Vyper](#vyper), [Solidity](#solidity) that utilize compilers to change high-level code down into the necessary assembly language, often times EVM Bytecode. 
+
+### EVM Bytecode
+
 
 ## Smart Contact Languages
 ### Bitcoin Script
 Bitcoin script is a rather simple language for implementing smart contracts. Validity conditions must be met before any coins can be transfered, from and to, accounts. 
 
-### Ethereum 
-*What language?* Ethereum offered a Turing-complete language, Serpent, to implement contracts in. This language allowwed loops, which presented both benefits and drawbacks. Among drawbacks, chiefly was the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
+### Ethereum: Serpent
+Ethereum offered a Turing-complete language, Serpent, to implement contracts in. This language allowwed loops, which presented both benefits and drawbacks. Among drawbacks, chiefly was the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
 
+### Ethereum: Vyper
+The creators of Ethereum created a new "pythonic" language called Vyper after Serpent. [[2]](#references)
 
-
+### Solidity
+Solidity has become the forefront of smart contract languages. 
 
 
 
@@ -18,4 +30,8 @@ Bitcoin script is a rather simple language for implementing smart contracts. Val
 
 
 ## References
-[1] Vitalik Buterin. A Next-Generation Smart Contract and Decentralized Application Platform, 2014.
+[1] [Vitalik Buterin. A Next-Generation Smart Contract and Decentralized Application Platform, 2014.](https://cryptorating.eu/whitepapers/Ethereum/Ethereum_white_paper.pdf) 
+
+[2] [ethereum/vyper github README.md](https://github.com/ethereum/vyper)
+
+[3] [Compiling and Smart Contracts: ABI Explained](https://www.sitepoint.com/compiling-smart-contracts-abi/)
