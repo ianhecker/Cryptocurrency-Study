@@ -27,7 +27,7 @@ Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), & [So
 Bitcoin script is a rather simple language for implementing smart contracts. Validity conditions must be met before any coins can be transfered, from and to, accounts. 
 
 ### Ethereum: Serpent
-Ethereum offered a Turing-complete language, Serpent, to implement contracts in. This language allowwed loops, which presented both benefits and drawbacks. Among drawbacks, chiefly was the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
+Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
 
 ### Ethereum: Vyper
 Ethereum supports an open-source project of a new "pythonic" language called Vyper. This language came after the creation of Serpent. [[2]](#references)
@@ -36,7 +36,8 @@ Ethereum supports an open-source project of a new "pythonic" language called Vyp
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
 ### Scilla
-Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode [[4]](#references). It is designed to possess the following qualities:
+Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode [[4]](#references). Scilla possesses the following principles:
+
 + **Separation between Computation and Communication**
 
     Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. This separated and automata structure allows division of contract-specific logic from blockchain interactions for cleaner reasoning [[4]](#references).
@@ -52,7 +53,53 @@ Scilla is an intermediate-level language designed to be compiled from a higher-l
 
 + **Separation between invocation and continuation**
 
-    Scilla uses CPS, or **C**ontinuation-**P**assing **S**tyle. CPS is when contracts are built as communicating automata, where calling another contract can be performed absolutely last. This can increase difficulty due to a change in style of coding, but is provided a solution via invoked *continuations* from the execution environment. This allows translations from Solidity to Scilla. Additionally, the use of automata structures aids in analysis, testing, and verification of contracts [[4]](#references).
+    Scilla uses CPS, or **C**ontinuation-**P**assing **S**tyle. CPS is when contracts are built as communicating automata, and calls made to one another can be performed absolutely last. This can increase difficulty due to a change in style of coding, but is provided a solution via invoked *continuations* from the execution environment. This allows translations from Solidity to Scilla. Additionally, the use of automata structures aids in analysis, testing, and verification of contracts [[4]](#references).
+
+#### Scilla Implementation
++ **Implicitly declared fields**
+    
+    All Scilla contracts when initialized create a public and mutable field called *balance* that holds the contract's funds. This field can only be editted through explicitly moving funds to other accounts, which are held in *uints*, or 32 bit **U**nsigned **Int**egers [[4]](#references). 
+
++ **Transitions**
+
+    Transitions are simliar to Solidity methods or functions, and is the lingo for the Scilla "functions". This is because of the automata formatting of Scilla code and contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
+
+    Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process [[4]](#references). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
