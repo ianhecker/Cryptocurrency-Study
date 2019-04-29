@@ -4,12 +4,12 @@ This paper serves as a source of compliation for languages used to implement sma
     + And if they dont use Solidity, can they still compile down into Ethereum bytecode? 
 
 ### Table of Contents
-+ [Ethereum Smart Contracts](#ethereum\ smart\ contracts)
-    + [EVM Bytecode](#evm\ bytecode)
-+ [Smart Contract Languages](#smart\ contract\ languages)
-    + [Bitcoin Script](#bitcoin\ script)
-    + [Ethereum: Serpent](#ethereum:\ serpent)
-    + [Ethereum: Vyper](#ethereum:\ vyper)
++ [Ethereum Smart Contracts](#ethereum-smart-contracts)
+    + [EVM Bytecode](#evm-bytecode)
++ [Smart Contract Languages](#smart-contract-languages)
+    + [Bitcoin Script](#bitcoin-script)
+    + [Ethereum: Serpent](#ethereum:-serpent)
+    + [Ethereum: Vyper](#ethereum:-vyper)
     + [Solidity](#solidity)
     + [Scilla](#scilla)
 
@@ -17,7 +17,7 @@ This paper serves as a source of compliation for languages used to implement sma
 ## Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
-Languages such as: [Serpent](#ethereum:\ serpent), [Vyper](#ethereum:\ vyper), & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
+Languages such as: [Serpent](#ethereum:-serpent), [Vyper](#ethereum:-vyper), & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
 
 ### EVM Bytecode
 
@@ -39,13 +39,26 @@ Solidity has become the forefront of smart contract languages. The Ethereum proj
 Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode [[4]](#references). It is designed to possess the following qualities:
 + **Separation between Computation and Communication**
 
-    Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. This separated and automata structure allows partioning of contract-specific logic for cleaner reasoning. [[4]](#references)
+    Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. This separated and automata structure allows division of contract-specific logic from blockchain interactions for cleaner reasoning [[4]](#references).
 
-+ **Seraration between effectful and pure computations**
++ **Separation between effectful and pure computations**
 
-    
+    Types of computation are divided into categories: 
+    + Pure Expressions (primitive data type expressions and maps)
+    + Impure Local State Manipulations (reading/writing fields of a contract)
+    + Blockchain Reflections (reading number of current block, etc.)
+
+    Semantics between these types of computations, Scilla ensures type preservation [[4]](#references).
 
 + **Separation between invocation and continuation**
+
+    Scilla uses CPS, or **C**ontinuation-**P**assing **S**tyle. CPS is when contracts are built as communicating automata, where calling another contract can be performed absolutely last. This can increase difficulty due to a change in style of coding, but is provided a solution via invoked *continuations* from the execution environment. This allows translations from Solidity to Scilla. Additionally, the use of automata structures aids in analysis, testing, and verification of contracts [[4]](#references).
+
+
+
+
+
+
 
 
 
