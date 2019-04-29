@@ -8,8 +8,8 @@ This paper serves as a source of compliation for languages used to implement sma
     + [EVM Bytecode](#evm-bytecode)
 + [Smart Contract Languages](#smart-contract-languages)
     + [Bitcoin Script](#bitcoin-script)
-    + [Ethereum: Serpent](#ethereum:-serpent)
-    + [Ethereum: Vyper](#ethereum:-vyper)
+    + [Ethereum: Serpent](#ethereum-serpent)
+    + [Ethereum: Vyper](#ethereum-vyper)
     + [Solidity](#solidity)
     + [Scilla](#scilla)
 
@@ -17,7 +17,7 @@ This paper serves as a source of compliation for languages used to implement sma
 ## Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
-Languages such as: [Serpent](#ethereum:-serpent), [Vyper](#ethereum:-vyper), & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
+Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
 
 ### EVM Bytecode
 
