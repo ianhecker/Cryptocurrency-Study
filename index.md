@@ -36,7 +36,9 @@ Ethereum supports an open-source project of a new "pythonic" language called Vyp
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
 ### Scilla
-Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode [[4]](#references). Scilla possesses the following principles:
+Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
+
+#### Scilla Principles
 
 + **Separation between Computation and Communication**
 
@@ -64,10 +66,19 @@ Scilla is an intermediate-level language designed to be compiled from a higher-l
 
     Transitions are simliar to Solidity methods or functions, and is the lingo for the Scilla "functions". This is because of the automata formatting of Scilla code and contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
 
-    Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process [[4]](#references). 
+    Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process. To reiterate, Scilla contracts do not interact with other contracts during computations, only at the very beginning or end, through initiation of the contract or post-computation communication to others [[4]](#references). 
 
+    Transitions are activated with a transaction from another party, that contains a *tag* of type string to specifically call a transition. These messages could also contain other fields to suit a transition's parameters, and common ones are: 
+    + *sender*: the address of the messenger
+    + *value* : an uint of some transaction amount
 
++ **Looping**
 
+    Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically [[4]](#references). 
+
++ **Control Flow**
+
+    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring via a call to another contract inside of a function, just like it happened in Solidity. This solution is  called a *tail-call*, and is now considered a best practice in Solidity [[4]](#references). 
 
 
 
@@ -116,6 +127,8 @@ Scilla is an intermediate-level language designed to be compiled from a higher-l
 
 [3] [Compiling and Smart Contracts: ABI Explained](https://www.sitepoint.com/compiling-smart-contracts-abi/)
 
-[4] [Sergey, Ilya, Amrit Kumar, and Aquinas Hobor. Scilla: a smart contract intermediate-level language., 2018.](https://arxiv.org/abs/1801.00687)
+[4] [Ilya Sergey, Amrit Kumar, and Aquinas Hobor. Scilla: a smart contract intermediate-level language., 2018.](https://arxiv.org/abs/1801.00687)
 
-[5] []()
+[5] [Michael del Castillo.The DAO Attacked: Code Issue Leads to $60 Million Ether Theft, 2016.](https://www.coindesk.com/dao-attacked-code-issue-leads-60-million-ether-theft)
+
+[6] [Emerging Scilla & Vyper Programming Languages for Smart Contracts](https://blockonomi.com/scilla-vyper/)
