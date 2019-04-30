@@ -7,7 +7,6 @@ This paper serves as a source of compliation for languages used to implement sma
 + [Ethereum Smart Contracts](#ethereum-smart-contracts)
     + [EVM Bytecode](#evm-bytecode)
 + [Smart Contract Languages](#smart-contract-languages)
-    + [Bitcoin Script](#bitcoin-script)
     + [Ethereum: Serpent](#ethereum-serpent)
     + [Ethereum: Vyper](#ethereum-vyper)
     + [Solidity](#solidity)
@@ -23,9 +22,6 @@ Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), & [So
 
 
 ## Smart Contract Languages
-### Bitcoin Script
-Bitcoin script is a rather simple language for implementing smart contracts. Validity conditions must be met before any coins can be transfered, from and to, accounts. 
-
 ### Ethereum: Serpent
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
 
@@ -64,13 +60,42 @@ Scilla is an intermediate-level language designed to be compiled from a higher-l
 
 + **Transitions**
 
-    Transitions are simliar to Solidity methods or functions, and is the lingo for the Scilla "functions". This is because of the automata formatting of Scilla code and contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
+    Transitions are simliar to Solidity methods or functions, and is the lingo for a Scilla "function". This is because of the automata formatting of Scilla code and contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
 
     Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process. To reiterate, Scilla contracts do not interact with other contracts during computations, only at the very beginning or end, through initiation of the contract or post-computation communication to others [[4]](#references). 
 
-    Transitions are activated with a transaction from another party, that contains a *tag* of type string to specifically call a transition. These messages could also contain other fields to suit a transition's parameters, and common ones are: 
+    Transitions are activated with a transaction from another party, and therefore are only explicitly called. Transaction parameters are formatted to accept data from a message, and contain a *tag* of type string that specificies which contract transition. The parameters can also contain other fields for data from messages, including: 
     + *sender*: the address of the messenger
     + *value* : an uint of some transaction amount
+    + etc.
+    
+    When a transition performs a *send*, or a transaction to another entity, the final field will be either a *continuation* or the constant *MT* that specifies to call no continuation, and hence perform no more computations. 
+
++ **Continuations**
+
+    Continuations can be considered "remaining computations" to do after a call to another contract. While Scilla enforces non-tail calls from transitions, it allows transitions to explicitly call a continuation post-call of another contract to perform computations [[4]](#references).
+
+    ```scilla
+    (* Example code taken from Scilla Whitepaper [4] *)
+
+    (* Specifying a  continuation in a Caller contract *)
+    continuationUseResult (res : uint)
+        send(<to→owner, amount→0, tag→"main", msg→res>, MT)
+        
+    (* Using a continuation in a transition of Caller *)
+    transitionClientTransition
+        (sender : address, value : uint, tag : string)
+        (* code of the transition *)
+        send(<to→sender, amount→0,
+            tag→"main", msg→res>, UseResult)
+    
+    (* Returning a result in a callee contract  *)    
+    transitionServerTransition
+        (sender : address, value : uint, tag : string)
+        (* code of the transition *)
+        return value
+    ```
+
 
 + **Looping**
 
@@ -79,6 +104,7 @@ Scilla is an intermediate-level language designed to be compiled from a higher-l
 + **Control Flow**
 
     Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring via a call to another contract inside of a function, just like it happened in Solidity. This solution is  called a *tail-call*, and is now considered a best practice in Solidity [[4]](#references). 
+
 
 
 
