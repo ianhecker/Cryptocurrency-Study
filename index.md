@@ -1,11 +1,13 @@
 # Smart Contract Implementation Languages
-This paper serves as a source of compliation for languages used to implement smart contracts, and information about them. It also answers the questions:
-+ What smart contract implementations are out there?
-    + And if they dont use Solidity, can they still compile down into Ethereum bytecode? 
+This paper serves as a source of compliation on information about languages used to implement smart contracts. It aims to answer the questions:
+
++ What smart contract implementation languages are out there?
+    + Can they compile down into Ethereum bytecode? 
 
 ### Table of Contents
 + [Ethereum Smart Contracts](#ethereum-smart-contracts)
     + [EVM Bytecode](#evm-bytecode)
++ [Smart Contract Verification](#smart-contract-verification)
 + [Smart Contract Languages](#smart-contract-languages)
     + [Ethereum: Serpent](#ethereum-serpent)
     + [Ethereum: Vyper](#ethereum-vyper)
@@ -17,14 +19,26 @@ This paper serves as a source of compliation for languages used to implement sma
 ## Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
-Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), [Bamboo](#bamboo) & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
+Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
 
 ### EVM Bytecode
+**E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project. 
 
+## Smart Contract Verification
+### Formal Verification
+The semantics of Smart Contracts needs to be ensured to be exactly as imagined by developers. After committing to a blockchain, the contract will be immutable. The most famous attack on the Ethereum platform:
+
++ Re-entrance Attack
+    + In 2016, an attack on DAO, or **D**ecentralized **A**utonomous **O**rganization, was performed. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified by the DAO contract, and was subsequently recovered [[9]](#references) [[10]](#references). 
+
+In order to prevent attacks or contract errors semantics must be proven with proofs beforehand. 
++ Scilla uses a tool called Coq to translate Scilla into a functional language called Gallina to verify semantics [[4]](#references).
++ The paper [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611) outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
++ Solidity
 
 ## Smart Contract Languages
 ### Ethereum: Serpent
-Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and present no further incentive to miners to continue executing a smart contract [[1]](#references).
+Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
 ### Ethereum: Vyper
 Ethereum supports an open-source project of a new "pythonic" language called Vyper. This language came after the creation of Serpent. [[2]](#references)
@@ -33,13 +47,13 @@ Ethereum supports an open-source project of a new "pythonic" language called Vyp
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
 ### Scilla
-Scilla is an intermediate-level, non-Turing complete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
+Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
 
 #### Scilla Principles
 
 + **Separation between Computation and Communication**
 
-    Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. This separated and automata structure allows division of contract-specific logic from blockchain interactions for cleaner reasoning [[4]](#references).
+    Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. These separated automata structures allow division of contract-specific logic from blockchain interactions for cleaner reasoning [[4]](#references).
 
 + **Separation between effectful and pure computations**
 
@@ -112,44 +126,9 @@ Scilla is an intermediate-level, non-Turing complete language designed to be com
 
 ### Bamboo
 
-Bamboo is very similar in structure to Scilla and similarly attempts to solve reentrance problems. Bamboo has even started to produce (with limited success) EVM bytecode that "ran as expected" [[7]](#references). The OCaml compiler still remains buggy, and is now maintained by Cornell Blockchain in [this github repository](#https://github.com/CornellBlockchain/bamboo) [[8]](#references). 
+Bamboo is very similar in structure to Scilla and similarly attempts to solve re-entrance problems. Bamboo has even started to produce (with limited success) EVM bytecode that "ran as expected" [[7]](#references). The OCaml compiler still remains buggy, and is now maintained by Cornell Blockchain in [this github repository](#https://github.com/CornellBlockchain/bamboo). Bamboo is only at version 0.0.03, with a year since the last commit made to the forked branch made by Cornell Blockchain [[8]](#references). 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---
 ## References
 [1] [Vitalik Buterin. A Next-Generation Smart Contract and Decentralized Application Platform, 2014.](https://cryptorating.eu/whitepapers/Ethereum/Ethereum_white_paper.pdf) 
 
@@ -166,3 +145,9 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [7] [Yoichi Hirai. Bamboo compiler started producing EVM bytecode, 2017.](https://medium.com/@pirapira/bamboo-compiler-started-producing-evm-bytecode-6a55e4633de9)
 
 [8] [Bamboo Compiler maintained by Cornell Blockchain](https://github.com/CornellBlockchain/bamboo)
+
+[9] [Atzei, Nicola, Massimo Bartoletti, and Tiziana Cimoli. A Survey of Attacks on Ethereum Smart Contracts (SOK), 2017.](https://link.springer.com/chapter/10.1007/978-3-662-54455-6_8)
+
+[10] [The DAO (Organization) Wikipedia](https://en.wikipedia.org/wiki/The_DAO_(organization)#cite_note-FT-TheDao20160517-6)
+
+[11] [Bhargavan, Karthikeyan, Antoine Delignat-Lavaud, Cédric Fournet, Anitha Gollamudi, Georges Gonthier, Nadim Kobeissi, Natalia Kulatova et al. Formal Verification of Smart Contracts: Short Paper, 2016.](https://dl.acm.org/citation.cfm?id=2993611)
