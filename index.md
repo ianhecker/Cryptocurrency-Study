@@ -11,12 +11,13 @@ This paper serves as a source of compliation for languages used to implement sma
     + [Ethereum: Vyper](#ethereum-vyper)
     + [Solidity](#solidity)
     + [Scilla](#scilla)
+    + [Bamboo](#bamboo)
 
 
 ## Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
-Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
+Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), [Bamboo](#bamboo) & [Solidity](#solidity) utilize compilers to change their high-level code down into EVM Bytecode. 
 
 ### EVM Bytecode
 
@@ -96,23 +97,22 @@ Scilla is an intermediate-level, non-Turing complete language designed to be com
         return value
     ```
 
-
 + **Looping**
 
     Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically during formal verification [[4]](#references). 
 
 + **Control Flow**
 
-    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring via a call to another contract inside of a function, just like it happened in Solidity. This solution is  called a *tail-call*, and is now considered a best practice in Solidity [[4]](#references). 
+    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent another occurence of the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring. This exploit occured via a call to another contract inside of a function, which lead to contract-state manipulation in a "re-entry attack". The solution is called a *tail-call*, where other contracts are called post-transition and is now considered a best practice in Solidity [[4]](#references). 
 
 #### Scilla Formal Verification
 + **Coq Proof Assistant**
 
     Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
 
+### Bamboo
 
-
-
+Bamboo is very similar in structure to Scilla and similarly attempts to solve reentrance problems. Bamboo has even started to produce (with limited success) EVM bytecode that "ran as expected" [[7]](#references). The OCaml compiler still remains buggy, and is now maintained by Cornell Blockchain in [this github repository](#https://github.com/CornellBlockchain/bamboo) [[8]](#references). 
 
 
 
@@ -159,6 +159,10 @@ Scilla is an intermediate-level, non-Turing complete language designed to be com
 
 [4] [Ilya Sergey, Amrit Kumar, and Aquinas Hobor. Scilla: a smart contract intermediate-level language., 2018.](https://arxiv.org/abs/1801.00687)
 
-[5] [Michael del Castillo.The DAO Attacked: Code Issue Leads to $60 Million Ether Theft, 2016.](https://www.coindesk.com/dao-attacked-code-issue-leads-60-million-ether-theft)
+[5] [Michael del Castillo. The DAO Attacked: Code Issue Leads to $60 Million Ether Theft, 2016.](https://www.coindesk.com/dao-attacked-code-issue-leads-60-million-ether-theft)
 
 [6] [Emerging Scilla & Vyper Programming Languages for Smart Contracts](https://blockonomi.com/scilla-vyper/)
+
+[7] [Yoichi Hirai. Bamboo compiler started producing EVM bytecode, 2017.](https://medium.com/@pirapira/bamboo-compiler-started-producing-evm-bytecode-6a55e4633de9)
+
+[8] [Bamboo Compiler maintained by Cornell Blockchain](https://github.com/CornellBlockchain/bamboo)
