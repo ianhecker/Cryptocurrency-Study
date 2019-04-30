@@ -36,7 +36,7 @@ Ethereum supports an open-source project of a new "pythonic" language called Vyp
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
 ### Scilla
-Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
+Scilla is an intermediate-level language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
 
 #### Scilla Principles
 
@@ -74,7 +74,7 @@ Scilla is an intermediate-level language designed to be compiled from a higher-l
 
 + **Looping**
 
-    Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically [[4]](#references). 
+    Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically during formal verification [[4]](#references). 
 
 + **Control Flow**
 
