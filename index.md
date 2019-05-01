@@ -71,7 +71,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
 
 + **Strong Typing**
 
-    Something interesting that vyper offers support for, is unit types. While timestamps aren't too surprising, the units wei & wei per second are implemented [[12]](#references). wei is the smallest denomination of Ether, ( 10 <sup>-18</sup> of an Ether ), and named after the cryptographer Wei Dai.  
+    Something interesting that vyper offers support for, is unit types. While timestamps aren't too surprising, the units Wei & Wei per second are implemented [[12]](#references). Wei is the smallest denomination of Ether, ( 10 to the <sup>-18th</sup> of an Ether ), and named after the cryptographer Wei Dai [[13]](#references).  
 
 + **Small & Understandable Code**
 + **Limited Support for Pure Functions**
@@ -177,7 +177,7 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 
 [7] [Yoichi Hirai. Bamboo compiler started producing EVM bytecode, 2017.](https://medium.com/@pirapira/bamboo-compiler-started-producing-evm-bytecode-6a55e4633de9)
 
-[8] [Bamboo Compiler maintained by Cornell Blockchain](https://github.com/CornellBlockchain/bamboo)
+[8] [Bamboo Compiler github repository. Cornell Blockchain fork](https://github.com/CornellBlockchain/bamboo)
 
 [9] [Atzei, Nicola, Massimo Bartoletti, and Tiziana Cimoli. A Survey of Attacks on Ethereum Smart Contracts (SOK), 2017.](https://link.springer.com/chapter/10.1007/978-3-662-54455-6_8)
 
@@ -186,3 +186,5 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [11] [Bhargavan, Karthikeyan, Antoine Delignat-Lavaud, Cédric Fournet, Anitha Gollamudi, Georges Gonthier, Nadim Kobeissi, Natalia Kulatova et al. Formal Verification of Smart Contracts: Short Paper, 2016.](https://dl.acm.org/citation.cfm?id=2993611)
 
 [12] [Vyper Documentation](https://vyper.readthedocs.io/en/v0.1.0-beta.9/)
+
+[13] [Jake Frankenfield. Wei, 2018](https://www.investopedia.com/terms/w/wei.asp)
