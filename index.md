@@ -14,11 +14,14 @@ This paper serves as a source of compilation on information about languages besi
     + [Attacks on Smart Contracts](#attacks-on-smart-contracts)
     + [Formal Verification](#formal-verification)
 + [Smart Contract Languages](#smart-contract-languages)
-    + [Solidity](#solidity)
-    + [Serpent](#serpent)
-    + [Vyper](#vyper)    
-    + [Scilla](#scilla)
-    + [Bamboo](#bamboo)
+    + [Promising Languages](#promising-languages)
+        + [Scilla](#scilla)
+        + [Solidity](#solidity)
+        + [Vyper](#vyper)            
+    + [Deprecated Languages](#deprecated-languages)    
+        + [Bamboo](#bamboo)
+        + [Serpent](#serpent)
+        
 
 ---
 ## Smart Contracts [^](#table-of-contents)
@@ -49,11 +52,87 @@ In order to prevent attacks or contract errors, semantics should be proven mathe
 
 ---
 ## Smart Contract Languages [^](#table-of-contents)
+### **Promising Languages** [^](#table-of-contents)
+### Scilla [^](#table-of-contents)
+Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). Per the [Scilla Documentation](https://scilla.readthedocs.io/en/latest/), it is specific to the [Zilliqa](https://zilliqa.com/) blockchain (cannot be compiled into EVM bytecode).
+
+#### Scilla Principles [^](#table-of-contents)
+
++ **Separation between Computation and Communication**
+
+    Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. These separated automata structures allow division of contract-specific logic from blockchain interactions for cleaner reasoning [[4]](#references).
+
++ **Separation between effectful and pure computations**
+
+    Types of computation are divided into categories: 
+    + Pure Expressions (primitive data type expressions and maps)
+    + Impure Local State Manipulations (reading/writing fields of a contract)
+    + Blockchain Reflections (reading number of current block, etc.)
+
+    Semantics between these types of computations, Scilla ensures type preservation [[4]](#references).
+
++ **Separation between invocation and continuation**
+
+    Scilla uses CPS, or **C**ontinuation-**P**assing **S**tyle. CPS is when contracts are built as communicating automata, and calls made to one another can be performed absolutely last. This can increase difficulty due to a change in style of coding, but is provided a solution via invoked *continuations* from the execution environment. This allows translations from Solidity to Scilla. Additionally, the use of automata structures aids in analysis, testing, and verification of contracts [[4]](#references).
+
+#### Scilla Implementation [^](#table-of-contents)
++ **Implicitly declared fields**
+    
+    All Scilla contracts when initialized create a public and mutable field called *balance* that holds the contract's funds. This field can only be editted through explicitly moving funds to other accounts, which are held in *uints*, or 32 bit **U**nsigned **Int**egers [[4]](#references). 
+
++ **Transitions**
+
+    Transitions are simliar to Solidity methods or functions, and is the lingo for a Scilla "function". This is because of the automata formatting of Scilla contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
+
+    Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process. To reiterate, Scilla contracts do not interact with other contracts during computations, only at the very beginning or end, through initiation of the contract or post-computation communication to others [[4]](#references). 
+
+    Transitions are activated with a transaction from another party, and therefore are only explicitly called. Transaction parameters are formatted to accept data from a message, and contain a *tag* of type string that specificies which contract transition. The parameters can also contain other fields for data from messages, including: 
+    + *sender*: the address of the messenger
+    + *value* : an uint of some transaction amount
+    + etc.
+    
+    When a transition performs a *send*, or a transaction to another entity, the final field will be either a *continuation* or the constant *MT* that specifies to call no continuation, and hence perform no more computations [[4]](#references). 
+
++ **Continuations**
+
+    Continuations can be considered "remaining computations" to do after a call to another contract. While Scilla enforces non-tail calls from transitions, it allows transitions to explicitly call a continuation post-call of another contract to perform computations [[4]](#references).
+
+    ```scilla
+    (* Example code taken from Scilla Whitepaper [4] *)
+
+    (* Specifying a  continuation in a Caller contract *)
+    continuationUseResult (res : uint)
+        send(<to→owner, amount→0, tag→"main", msg→res>, MT)
+        
+    (* Using a continuation in a transition of Caller *)
+    transitionClientTransition
+        (sender : address, value : uint, tag : string)
+        (* code of the transition *)
+        send(<to→sender, amount→0,
+            tag→"main", msg→res>, UseResult)
+    
+    (* Returning a result in a callee contract  *)    
+    transitionServerTransition
+        (sender : address, value : uint, tag : string)
+        (* code of the transition *)
+        return value
+    ```
+
++ **Looping**
+
+    Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically during formal verification [[4]](#references). 
+
++ **Control Flow**
+
+    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent another occurence of the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring. This exploit occured via a call to another contract inside of a function, which lead to contract-state manipulation in a "re-entry attack". The solution is called a *tail-call*, where other contracts are called post-transition and is now considered a best practice in Solidity [[4]](#references). 
+
+#### Scilla Formal Verification [^](#table-of-contents)
++ **Coq Proof Assistant**
+
+    Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
+---
 ### Solidity [^](#table-of-contents)
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
-
-### Serpent [^](#table-of-contents)
-Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
 ### Vyper [^](#table-of-contents)
 The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compilable to EVM bytecode [[12]](#references).
@@ -204,88 +283,22 @@ def refund():
     self.refundIndex = ind + 30
 ```
 ---
-### Scilla [^](#table-of-contents)
-Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
-
-#### Scilla Principles [^](#table-of-contents)
-
-+ **Separation between Computation and Communication**
-
-    Contracts are thought of as *communicating automata* in Scilla. All computations are independent of each other as *standalone atomic transistions*. These separated automata structures allow division of contract-specific logic from blockchain interactions for cleaner reasoning [[4]](#references).
-
-+ **Separation between effectful and pure computations**
-
-    Types of computation are divided into categories: 
-    + Pure Expressions (primitive data type expressions and maps)
-    + Impure Local State Manipulations (reading/writing fields of a contract)
-    + Blockchain Reflections (reading number of current block, etc.)
-
-    Semantics between these types of computations, Scilla ensures type preservation [[4]](#references).
-
-+ **Separation between invocation and continuation**
-
-    Scilla uses CPS, or **C**ontinuation-**P**assing **S**tyle. CPS is when contracts are built as communicating automata, and calls made to one another can be performed absolutely last. This can increase difficulty due to a change in style of coding, but is provided a solution via invoked *continuations* from the execution environment. This allows translations from Solidity to Scilla. Additionally, the use of automata structures aids in analysis, testing, and verification of contracts [[4]](#references).
-
-#### Scilla Implementation [^](#table-of-contents)
-+ **Implicitly declared fields**
-    
-    All Scilla contracts when initialized create a public and mutable field called *balance* that holds the contract's funds. This field can only be editted through explicitly moving funds to other accounts, which are held in *uints*, or 32 bit **U**nsigned **Int**egers [[4]](#references). 
-
-+ **Transitions**
-
-    Transitions are simliar to Solidity methods or functions, and is the lingo for a Scilla "function". This is because of the automata formatting of Scilla contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
-
-    Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process. To reiterate, Scilla contracts do not interact with other contracts during computations, only at the very beginning or end, through initiation of the contract or post-computation communication to others [[4]](#references). 
-
-    Transitions are activated with a transaction from another party, and therefore are only explicitly called. Transaction parameters are formatted to accept data from a message, and contain a *tag* of type string that specificies which contract transition. The parameters can also contain other fields for data from messages, including: 
-    + *sender*: the address of the messenger
-    + *value* : an uint of some transaction amount
-    + etc.
-    
-    When a transition performs a *send*, or a transaction to another entity, the final field will be either a *continuation* or the constant *MT* that specifies to call no continuation, and hence perform no more computations [[4]](#references). 
-
-+ **Continuations**
-
-    Continuations can be considered "remaining computations" to do after a call to another contract. While Scilla enforces non-tail calls from transitions, it allows transitions to explicitly call a continuation post-call of another contract to perform computations [[4]](#references).
-
-    ```scilla
-    (* Example code taken from Scilla Whitepaper [4] *)
-
-    (* Specifying a  continuation in a Caller contract *)
-    continuationUseResult (res : uint)
-        send(<to→owner, amount→0, tag→"main", msg→res>, MT)
-        
-    (* Using a continuation in a transition of Caller *)
-    transitionClientTransition
-        (sender : address, value : uint, tag : string)
-        (* code of the transition *)
-        send(<to→sender, amount→0,
-            tag→"main", msg→res>, UseResult)
-    
-    (* Returning a result in a callee contract  *)    
-    transitionServerTransition
-        (sender : address, value : uint, tag : string)
-        (* code of the transition *)
-        return value
-    ```
-
-+ **Looping**
-
-    Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically during formal verification [[4]](#references). 
-
-+ **Control Flow**
-
-    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent another occurence of the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring. This exploit occured via a call to another contract inside of a function, which lead to contract-state manipulation in a "re-entry attack". The solution is called a *tail-call*, where other contracts are called post-transition and is now considered a best practice in Solidity [[4]](#references). 
-
-#### Scilla Formal Verification [^](#table-of-contents)
-+ **Coq Proof Assistant**
-
-    Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
-
+### **Deprecated Languages** [^](#table-of-contents)
 ### Bamboo [^](#table-of-contents)
 
 Bamboo is very similar in structure to Scilla and similarly attempts to solve re-entrance problems. Bamboo has even started to produce (with limited success) EVM bytecode that "ran as expected" [[7]](#references). The OCaml compiler still remains buggy, and is now maintained by Cornell Blockchain in [this github repository](#https://github.com/CornellBlockchain/bamboo). Bamboo is only at version 0.0.03, with a year since the last commit made to the forked branch made by Cornell Blockchain [[8]](#references). 
 
+---
+### Serpent [^](#table-of-contents)
+Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
+
+Vitalik Buterin tweeted in July 2017: [[18]](#references) 
+    
+    "PSA: I now consider Serpent outdated tech; not nearly enough safety protections by current standards."
+
+Additionally, the [ethereum/serpent](https://github.com/ethereum/serpent) github repository states in the README as of 2017: [[19]](#references)
+
+    Being a low-level language, Serpent is NOT RECOMMENDED for building applications unless you really really know what you're doing. The creator recommends Solidity as a default choice, LLL if you want close-to-the-metal optimizations, or Viper if you like its features though it is still experimental.
 ---
 ## References [^](#table-of-contents)
 [1] [Vitalik Buterin. A Next-Generation Smart Contract and Decentralized Application Platform, 2014.](https://cryptorating.eu/whitepapers/Ethereum/Ethereum_white_paper.pdf) 
@@ -319,3 +332,7 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [15] ['Vyper By Example' Documentation](https://vyper.readthedocs.io/en/v0.1.0-beta.9/vyper-by-example.html#crowdfund)
 
 [16] [Nick Szabo. The Idea of Smart Contracts, 1997](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html)
+
+[17] [Vitalik Buterin. Tweet on Serpent](https://twitter.com/VitalikButerin/status/886400133667201024)
+
+[18] [ethereum/serpent github README.md](https://github.com/ethereum/serpent)
