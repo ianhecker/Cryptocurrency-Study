@@ -16,7 +16,7 @@ This paper serves as a source of compilation on information about languages besi
 + [Smart Contract Languages](#smart-contract-languages-)
     + [Promising Languages](#promising-languages-)
         + [Scilla](#scilla-)
-        + [Solidity](#solidity-)
+        + [Solidity](#solidity---brief-note-)
         + [Vyper](#vyper-)            
     + [Deprecated Languages](#deprecated-languages-)    
         + [Bamboo](#bamboo-)
@@ -132,9 +132,13 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 + **Coq Proof Assistant**
 
     Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
+
 ---
-### Solidity <a href="#table-of-contents">^</a>
-Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
+
+### Solidity - Brief Note <a href="#table-of-contents">^</a>
+Solidity has become the forefront of smart contract languages. It is by and far the most popular language, having been referenced the most during my time researching. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
+
+---
 
 ### Vyper <a href="#table-of-contents">^</a>
 The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compilable to EVM bytecode [[12]](#references).
