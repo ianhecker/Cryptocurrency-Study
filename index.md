@@ -23,7 +23,7 @@ This paper serves as a source of compilation on information about languages besi
         + [Serpent](#serpent)
         
 
-## Smart Contracts
+## Smart Contracts [Home](#references)
 
 ### Origin of Smart Contracts
 The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses that contracts can be embedded into both software and hardware. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when the right conditions are met [[16]](#references). 
