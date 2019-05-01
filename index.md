@@ -1,5 +1,5 @@
 # Smart Contract Implementation Languages
-This paper serves as a source of compilation on information about languages besides Solidity used to implement smart contracts. It aims to answer the questions:
+This paper serves as a source of compilation on information about languages, besides Solidity, used to implement smart contracts. It aims to answer the questions:
 
 + What smart contract implementation languages are out there?
     + Can they compile down into Ethereum bytecode? 
@@ -8,8 +8,7 @@ This paper serves as a source of compilation on information about languages besi
 ### Table of Contents
 + [Smart Contracts](#smart-contracts-)
     + [Origin of Smart Contracts](#origin-of-smart-contracts-)
-    + [Ethereum Smart Contracts](#ethereum-smart-contracts-)
-    + [EVM Bytecode](#evm-bytecode-)
+    + [Ethereum Smart Contracts](#ethereum-smart-contracts-)    
 + [Smart Contract Verification](#smart-contract-verification-)
     + [Attacks on Smart Contracts](#attacks-on-smart-contracts-)
     + [Formal Verification](#formal-verification-)
@@ -29,24 +28,21 @@ This paper serves as a source of compilation on information about languages besi
 ## Smart Contracts <a href="#table-of-contents">^</a>
 
 ### Origin of Smart Contracts <a href="#table-of-contents">^</a>
-The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses basic ideas of contracts and real-life applications for them. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when conditions are satisfied [[16]](#references). 
+The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html), Szabo discusses basic ideas of contracts and real-life applications for them. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when conditions are satisfied [[16]](#references). 
 
-Coin parking meters are similar, in that variations of coins add time for valid parking, but is important to note that parking meters often require a third party to verify parking has become invalid. Smart contracts can allow interactions on a blockchain without the need for a third party; using mathematically-provable semantics and cryptography as the trust mechanism between mutually-distrusting peers. 
+Coin parking meters are similar; variations of coins add time for valid parking, but it is important to note that parking meters often require a third party to verify parking has become invalid. Smart contracts can allow interactions on a blockchain without the need for a third party; using mathematically-provable semantics and cryptography as the trust mechanism between mutually-distrusting peers. 
 
 ### Ethereum Smart Contracts <a href="#table-of-contents">^</a>
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
 Languages such as: [Serpent](#serpent), [Vyper](#vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
 
-### EVM Bytecode <a href="#table-of-contents">^</a>
-**E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project to be run by miners on the Ethereum network. 
-
 ## Smart Contract Verification <a href="#table-of-contents">^</a>
 ### Attacks on Smart Contracts <a href="#table-of-contents">^</a>
 The semantics of Smart Contracts needs to be ensured to be exactly as imagined by developers. After committing to a blockchain, the contract will be immutable. The most famous attack on the Ethereum platform:
 
 + Re-entrance Attack
-    + In 2016, an exploit occured of a DAO contract, or **D**ecentralized **A**utonomous **O**rganization. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified per the original DAO contract, and was subsequently recovered through a forking of the blockchain by the Ethereum community [[9]](#references) [[10]](#references). 
+    + In 2016, an exploit occurred of a DAO contract, or **D**ecentralized **A**utonomous **O**rganization. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a separate DAO account. The account had a 28 day holding period, as specified per the original DAO contract, and was subsequently recovered through a forking of the blockchain by the Ethereum community [[9]](#references) [[10]](#references). 
 
 ### Formal Verification <a href="#table-of-contents">^</a>
 In order to prevent attacks or contract errors, semantics should be proven mathematically beforehand. 
@@ -56,8 +52,110 @@ In order to prevent attacks or contract errors, semantics should be proven mathe
 ---
 ## Smart Contract Languages <a href="#table-of-contents">^</a>
 ### **Promising Languages** <a href="#table-of-contents">^</a>
+
+### Pact <a href="#table-of-contents">^</a>
+Pact is a declarative, simplified control-flow language written for smart contract implementation in the Kadena blockchain.  [[19]](#references). The creation of Pact comes after the failure of logic in the DAO contract that utilized Solidity. [Pact's white paper](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) states that Solidity is dangerous due to unconstrained freedom, and lack of integrated safety features. Pact follows a similar route to the language Scilla of implementing tooling for safety, while Vyper focuses on simplification for code readability and added difficulty for incorrect/malicious contracts. 
+
+#### Pact Principles <a href="#table-of-contents">^</a>
+
++ **Turing-incomplete Safety**
+
+    Turing-completeness resulted in an exploit in an extremely complex Ethereum contract, altering Ethereum forever with a community-driven fork in the blockchain. Turing-incompleteness is safer, and therefore the ethical choice in transaction-based smart contracts [[9]](#references) [[10]](#references) [[19]](#references).
+
++ **Human-readable Ledger Code**
+
+    Modifying code can sometimes result in semantics not intended, so code is stored as-written on the blockchain to ensure unmodified logic [[19]](#references).
+
++ **Atomicity**
+
+    Ethereum contracts can fail after altering variables, due to out-of-gas errors or faulty contract logic. Progress shouldn't be lost during contract failures, just rolled-back.
+
++ **Encapsulation**
+
+    Code modules encapsulate data tables for safety, ensuring only the code modules can alter the data and not outside forces [[19]](#references).
+
+#### Pact Implementation <a href="#table-of-contents">^</a>
++ **Contract Tables, Keysets, & Module**
+
+    Data is stored in schema-less tables in "key-rows", allowing a versioned history via the table columns. Keysets are groups of public keys used to access data, and can be specified to be global or row-specific. Modules encapsulate data tables and keysets for data safety, and house all code. [[19]](#references).
+
++ **Transaction & Contract Atomicity**
+
+    A message to the blockchain is atomic, meaning that if the message fails, the previous state before the operation is rolled-back to via the columnar history of the data table. Only the full execution of the code will allow updates. This prevents the need of the good-practice of tail-calling other transactions that Solidity strives for, and Scilla enforces [[4]](#references) [[19]](#references).
+
++ **Querying Contract Data**
+
+    Data is simply exported, rather than processed inside miners. This alleviates out-of-gas problems where miners could use all the gas in Ethereum, resulting in incomplete contracts.  [[19]](#references).
+
++ **Bitcoin Opcode Inspiration**
+
+    Bitcoin Script in contracts can only offer pass or fail results. However, Bitcoin's signature-verification via opcodes *CHECKSIG* & *OP_CHECKMULTISIG* inspired Pact design's keyset idea [[19]](#references).  
+
++ **LISP Syntax**
+
+    With Pact code stored directly on the ledger, code takes more time to execute than bytecode would. To counter this, Pact uses LISP *s-expression* syntax that represents the AST tree to be execute. The Pact compiler offers runtime errors and detailed errors with stack tracing  [[19]](#references).
+
+#### Pact Features Specifically Not Included <a href="#table-of-contents">^</a>
++ **Unbounded Looping & Recursion**
+
+    This is to keep the language Turing-incomplete, and prevent errors. Bounded Looping is allowed on finite list structures [[19]](#references).
+
++ **Conditionals**
+
+    Pact does include IF statements, but suggests that programmers utilize the *enforce* that can abort the transaction [[19]](#references).
+
++ **Nulls**
+
+    Because Pact employs a database-like design, nulls are not allowed. Nulls also allow programmers to avoid issues behind why values are null. No nulls forces programmers to handle these scenarios [[19]](#references).
+
++ **Lambdas, Macros, or *eval***
+
+    While LISP does support these, Pact does not. Lambdas' anonymous functions reduce performance but can also severely complicate scopes [[19]](#references).
+
+#### Pact Code Example <a href="#table-of-contents">^</a>
+This example is taken from [The Pact Smart-Contract Language](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) white paper. It is a simple function for an account [[19]](#references). 
+
+
+```LISP
+(define-­‐keyset 'accounts-­‐admin
+    (read-­‐keyset "accounts-­‐admin-­‐keyset"))
+    
+    (module accounts'accounts-­‐admin
+    "Simple account functionality."
+    
+    (defun create-­‐account(address keyset)
+    (insert'accounts address
+        { "balance": 0, "amount": 0, "keyset": keyset,
+           "note": "Created account"}))
+        
+    (defun transfer(src dest amount)
+      "transfer AMOUNT from SRC to DEST"
+     (with-­‐read 'accounts src
+        { "balance":= src-­‐balance
+        , "keyset":= src-­‐ks }
+      (with-­‐keyset src-­‐ks  
+       (check-­‐balance src-­‐balance amount)
+        (with-­‐read 'accounts dest { "balance":= dest-­‐balance }
+         (write 'accounts src
+                { "balance": (-­‐src-­‐balance  amount)
+                , "amount": (-­‐amount)
+                , "note": { "transfer-­‐to":  dest } })
+         (write 'accounts dest
+         { "balance": (+ dest-­‐balance amount)
+         , "amount": amount
+         , "note": { "transfer-­‐from": src } })))))
+         
+    (defun check-­‐balance(balance amount)
+      (enforce (<= amount balance) "Insufficient funds"))
+   )
+   
+   (create-­‐table 'accounts 'accounts)
+```
+
+---
+
 ### Scilla <a href="#table-of-contents">^</a>
-Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). Per the [Scilla Documentation](https://scilla.readthedocs.io/en/latest/), it is specific to the [Zilliqa](https://zilliqa.com/) blockchain (cannot be compiled into EVM bytecode).
+Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references) [[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). Per the [Scilla Documentation](https://scilla.readthedocs.io/en/latest/), it is specific to the [Zilliqa](https://zilliqa.com/) blockchain (cannot be compiled into EVM bytecode).
 
 #### Scilla Principles <a href="#table-of-contents">^</a>
 
@@ -127,7 +225,7 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
 + **Control Flow**
 
-    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent another occurence of the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring. This exploit occured via a call to another contract inside of a function, which lead to contract-state manipulation in a "re-entry attack". The solution is called a *tail-call*, where other contracts are called post-transition and is now considered a best practice in Solidity [[4]](#references). 
+    Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent another occurence of the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring. This exploit occurred via a call to another contract inside of a function, which lead to contract-state manipulation in a "re-entry attack". The solution is called a *tail-call*, where other contracts are called post-transition and is now considered a best practice in Solidity [[4]](#references). 
 
 #### Scilla Formal Verification <a href="#table-of-contents">^</a>
 + **Coq Proof Assistant**
@@ -136,112 +234,10 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
 ---
 
-### Pact <a href="#table-of-contents">^</a>
-#### Pact
-Pact is a declarative, simplified control-flow language written for smart contract implementation in the Kadena blockchain.  [[19]](#references). The creation of Pact comes after the failure of logic in the DAO contract that utilized Solidity. [Pact's white paper](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) states that Solidity is dangerous due to unconstrained freedom, and lack of integrated safety features. Pact follows a similar route to the language Scilla, while Vyper focuses on simplification for code readability and difficulty in incorrect/malicious contracts. 
-
-#### Pact Principles <a href="#table-of-contents">^</a>
-
-+ **Turing-imcomplete Safety**
-
-    Turing-completeness resulted in an exploit in an extremely complex Ethereum contract, altering Ethereum forever with a community-driven fork in the blockchain. Turing-incompleteness is safer, and more therefor the ethical choice in transaction-based smart contracts [[9]](#references) [[10]](#references) [[19]](#references).
-
-+ **Human-readable Ledger Code**
-
-    Modifying code can sometimes result in semantics not intended, so code is stored as-written on the blockchain to ensure unmodified logic [[19]](#references).
-
-+ **Atomicity**
-
-    Ethereum contracts can fail after altering variables, due to out-of-gas errors or faulty contract logic. Progress shouldn't be lost during contract failures, just rolled-back.
-
-+ **Encapsulation**
-
-    Code modules encapsulate data tables for safety, ensuring only the code modules can alter the data and not outside forces [[19]](#references).
-
-#### Pact Implementation <a href="#table-of-contents">^</a>
-+ **Contract Tables, Keysets, & Module**
-
-    Data is stored in schema-less tables in "key-rows", allowing a versioned history via the table columns. Keysets are groups of public keys used to access data, and can be specifies to be global or row-specific. Modules encapsulate data tables and keysets for data safety, and house all code. [[19]](#references).
-
-+ **Transaction & Contract Atomicity**
-
-    A message to the blockchain is atomic, meaning that if the message fails, the previous state before the operation is rolled-back to via the columnar history of the data table. Only the full execution of the code will allow updates. This prevents the need of the good-practice of tail-calling other transactions that Solidity strives for, and Scilla enforces [[4]](#references) [[19]](#references).
-
-+ **Querying Contract Data**
-
-    Data is simply exported, rather than processed inside miners. This alleviates out-of-gas problems where miners could use all the gas in Ethereum, resulting in imcomplete contracts.  [[19]](#references).
-
-+ **Bitcoin Opcode Inspiration**
-
-    Bitcoin Script in contracts can only offer pass or fail results. However, Bitcoin's signature-verification via opcodes *CHECKSIG* & *OP_CHECKMULTISIG* inspired Pact design's keyset idea [[19]](#references).  
-
-+ **LISP Syntax**
-
-    With Pact code stored directly on the ledger, code takes more time to execute than bytecode would. To counter this, Pact uses LISP *s-expression* syntax that represents the AST tree to be execute. The Pact compiler offers runtime errors and detailed errors with stack tracing  [[19]](#references).
-
-#### Pact Features Specifically Not Included <a href="#table-of-contents">^</a>
-+ **Unbounded Looping & Recursion**
-
-    This is to keep the language Turing-imcomplete, and prevent errors. Bounded Looping is allowed on finite list structures [[19]](#references).
-
-+ **Conditionals**
-
-    Pact does include IF statements, but suggests that programmers utilize the *enforce* that can abort the transaction [[19]](#references).
-
-+ **Nulls**
-
-    Because Pact employs a database-like design, nulls are not allowed. Nulls also allow programmers to avoid issues behind why values are null. No nulls forces programmers to handle these scenarios [[19]](#references).
-
-+ **Lambdas, Macros, or *eval***
-
-    While LISP does support these, Pact does not. Lambdas' anonymous functions reduce performance but can also severely complicate scopes [[19]](#references).
-
-#### Pact Code Example
-This example is taken from [The Pact Smart-Contract Language](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) white paper. It is a simple function for an account [[19]](#references). 
-
-
-```LISP
-(define-­‐keyset 'accounts-­‐admin
-    (read-­‐keyset "accounts-­‐admin-­‐keyset"))
-    
-    (module accounts'accounts-­‐admin
-    "Simple account functionality."
-    
-    (defun create-­‐account(address keyset)
-    (insert'accounts address
-        { "balance": 0, "amount": 0, "keyset": keyset,
-           "note": "Created account"}))
-        
-    (defun transfer(src dest amount)
-      "transfer AMOUNT from SRC to DEST"
-     (with-­‐read 'accounts src
-        { "balance":= src-­‐balance
-        , "keyset":= src-­‐ks }
-      (with-­‐keyset src-­‐ks  
-       (check-­‐balance src-­‐balance amount)
-        (with-­‐read 'accounts dest { "balance":= dest-­‐balance }
-         (write 'accounts src
-                { "balance": (-­‐src-­‐balance  amount)
-                , "amount": (-­‐amount)
-                , "note": { "transfer-­‐to":  dest } })
-         (write 'accounts dest
-         { "balance": (+ dest-­‐balance amount)
-         , "amount": amount
-         , "note": { "transfer-­‐from": src } })))))
-         
-    (defun check-­‐balance(balance amount)
-      (enforce (<= amount balance) "Insufficient funds"))
-   )
-   
-   (create-­‐table 'accounts 'accounts)
-```
-
----
-
 ### Solidity - Brief Note <a href="#table-of-contents">^</a>
 Solidity has become the forefront of smart contract languages. It is by and far the most popular language, having been referenced the most during my time researching. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
-Arguments have been made against Solidity, the language used in the DAO contract exploit, that the language is too versatile and unconstrained [[19]](#references). Solidity's inheritance, turing-completeness, non-tail external contract calls, and lack of safety features have produced efforts towards smart-contract languages that are Turing-imcomplete, functional languages with  integrated semantic-testing tools such as Scilla or Pact.  
+Arguments have been made against Solidity, the language used in the DAO contract exploit, that the language is too versatile and unconstrained [[19]](#references). Solidity's inheritance, turing-completeness, non-tail external contract calls, and lack of safety features have produced efforts towards smart-contract languages that are Turing-incomplete, functional languages with  integrated semantic-testing tools such as Scilla or Pact.  
 
 ---
 
