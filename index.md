@@ -15,6 +15,7 @@ This paper serves as a source of compilation on information about languages besi
     + [Formal Verification](#formal-verification-)
 + [Smart Contract Languages](#smart-contract-languages-)
     + [Promising Languages](#promising-languages-)
+        + [Pact](#pact-)
         + [Scilla](#scilla-)
         + [Solidity](#solidity---brief-note-)
         + [Vyper](#vyper-)            
@@ -28,7 +29,7 @@ This paper serves as a source of compilation on information about languages besi
 ## Smart Contracts <a href="#table-of-contents">^</a>
 
 ### Origin of Smart Contracts <a href="#table-of-contents">^</a>
-The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses that contracts can be embedded into both software and hardware. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when conditions are satisfied [[16]](#references). 
+The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses basic ideas of contracts and real-life applications for them. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when conditions are satisfied [[16]](#references). 
 
 Coin parking meters are similar, in that variations of coins add time for valid parking, but is important to note that parking meters often require a third party to verify parking has become invalid. Smart contracts can allow interactions on a blockchain without the need for a third party; using mathematically-provable semantics and cryptography as the trust mechanism between mutually-distrusting peers. 
 
@@ -135,8 +136,48 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
 ---
 
+### Pact <a href="#table-of-contents">^</a>
+#### Pact
+Pact is a language written for smart contract implementation in the Kadena blockchain.  [[19]](#references). The creation of Pact comes after the failure of logic in the DAO contract that utilized Solidity. [Pact's white paper](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) states that Solidity is dangerous due to unconstrained freedom, and lack of integrated safety features. Pact follows a similar route to the language Scilla, while Vyper focuses on simplification for code readability and difficulty in incorrect/malicious contracts. 
+
+#### Pact Principles
+
++ **Turing-imcomplete Safety**
+
+    Turing-completeness resulted in an exploit in an extremely complex Ethereum contract, altering Ethereum forever with a community-driven fork in the blockchain. Turing-incompleteness is safer, and more therefor the ethical choice in transaction-based smart contracts [[9]](#references) [[10]](#references) [[19]](#references).
+
++ **Human-readable Ledger Code**
+
+    Modifying code can sometimes result in semantics not intended, so code is stored as-written on the blockchain to ensure unmodified logic [[19]](#references).
+
++ **Atomicity**
+
+    Ethereum contracts can fail after altering variables, due to out-of-gas errors or faulty contract logic. Progress shouldn't be lost during contract failures, just rolled-back.
+
++ **Encapsulation**
+
+    Code modules encapsulate data tables for safety, ensuring only the code modules can alter the data and not outside forces [[19]](#references).
+
+#### Pact Implementation
++ **Contract Tables, Keysets, & Module**
+
+    Data is stored in schema-less tables in "key-rows", allowing a versioned history via the table columns. Keysets are groups of public keys used to access data, and can be specifies to be global or row-specific. Modules encapsulate data tables and keysets for data safety, and house all code. [[19]](#references).
+
++ **Transaction Atomicity**
+
+    A message to the blockchain is atomic, meaning that if the message fails, the previous state before the operation is rolled-back to via the columnar history of the data table [[19]](#references).
+
++ **Querying Contract Data**
+
+    Data is simply exported, rather than processed in-miner.  [[19]](#references).
+
+
+---
+
 ### Solidity - Brief Note <a href="#table-of-contents">^</a>
 Solidity has become the forefront of smart contract languages. It is by and far the most popular language, having been referenced the most during my time researching. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
+
+Arguments have been made against Solidity, the language used in the DAO contract exploit, that the language is too versatile and unconstrained [[19]](#references). Solidity's inheritance, turing-completeness, non-tail external contract calls, and lack of safety features have produced efforts towards smart-contract languages that are Turing-imcomplete, functional languages with  integrated semantic-testing tools such as Scilla or Pact.  
 
 ---
 
@@ -298,11 +339,11 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 ### Serpent <a href="#table-of-contents">^</a>
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
-Vitalik Buterin tweeted in July 2017: [[18]](#references) 
+Vitalik Buterin tweeted in July 2017: [[17]](#references) 
     
     "PSA: I now consider Serpent outdated tech; not nearly enough safety protections by current standards."
 
-Additionally, the [ethereum/serpent](https://github.com/ethereum/serpent) github repository states in the README as of 2017: [[19]](#references)
+Additionally, the [ethereum/serpent](https://github.com/ethereum/serpent) github repository states in the README as of 2017: [[18]](#references)
 
     Being a low-level language, Serpent is NOT RECOMMENDED for building applications unless you really really know what you're doing. The creator recommends Solidity as a default choice, LLL if you want close-to-the-metal optimizations, or Viper if you like its features though it is still experimental.
 
@@ -345,3 +386,5 @@ Additionally, the [ethereum/serpent](https://github.com/ethereum/serpent) github
 [17] [Vitalik Buterin. Tweet on Serpent](https://twitter.com/VitalikButerin/status/886400133667201024)
 
 [18] [ethereum/serpent github README.md](https://github.com/ethereum/serpent)
+
+[19] [Stuart Popejoy. The Pact Smart-Contract Language, 2016](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf)
