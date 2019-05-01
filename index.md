@@ -18,6 +18,10 @@ This paper serves as a source of compilation on information about languages besi
 
 ---
 ## Ethereum Smart Contracts
+The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses ideas that contracts can be embedded into both software and hardware. He claims the vending machine as the original an original ancestor to contracts; accepting coins and dispensing goods when the right conditions are met [[16]](#references). 
+
+Coin parking meters are similar, in that variations of coins add time for valid parking, but is important to note that parking meters often require a third party to verify parking has become invalid. Smart contracts can allow interactions on a blockchain without the need for a third party; using mathematically-provable semantics and cryptography as the trust mechanism between mutually-distrusting peers. 
+
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
 Languages such as: [Serpent](#serpent), [Vyper](#vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
@@ -306,3 +310,5 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [14] [Pure Functions, Wikipedia](https://en.wikipedia.org/wiki/Pure_function)
 
 [15] ['Vyper By Example' Documentation](https://vyper.readthedocs.io/en/v0.1.0-beta.9/vyper-by-example.html#crowdfund)
+
+[16] [Nick Szabo. The Idea of Smart Contracts, 1997](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html)
