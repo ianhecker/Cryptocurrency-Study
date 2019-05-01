@@ -211,7 +211,7 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
     Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
 
-#### Scilla Code Example
+#### Scilla Code Example <a href="#table-of-contents">^</a>
 Scilla code example taken from [Scilla: A Smart Contract Intermediate-Level Language](https://arxiv.org/abs/1801.00687) [[4]](#references).
 
 ```ML
