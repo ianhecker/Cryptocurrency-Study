@@ -100,7 +100,7 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
     Continuations can be considered "remaining computations" to do after a call to another contract. While Scilla enforces non-tail calls from transitions, it allows transitions to explicitly call a continuation post-call of another contract to perform computations [[4]](#references).
 
-    ```scilla
+    ```ML
     (* Example code taken from Scilla Whitepaper [4] *)
 
     (* Specifying a  continuation in a Caller contract *)
@@ -138,9 +138,9 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
 ### Pact <a href="#table-of-contents">^</a>
 #### Pact
-Pact is a language written for smart contract implementation in the Kadena blockchain.  [[19]](#references). The creation of Pact comes after the failure of logic in the DAO contract that utilized Solidity. [Pact's white paper](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) states that Solidity is dangerous due to unconstrained freedom, and lack of integrated safety features. Pact follows a similar route to the language Scilla, while Vyper focuses on simplification for code readability and difficulty in incorrect/malicious contracts. 
+Pact is a declarative, simplified control-flow language written for smart contract implementation in the Kadena blockchain.  [[19]](#references). The creation of Pact comes after the failure of logic in the DAO contract that utilized Solidity. [Pact's white paper](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) states that Solidity is dangerous due to unconstrained freedom, and lack of integrated safety features. Pact follows a similar route to the language Scilla, while Vyper focuses on simplification for code readability and difficulty in incorrect/malicious contracts. 
 
-#### Pact Principles
+#### Pact Principles <a href="#table-of-contents">^</a>
 
 + **Turing-imcomplete Safety**
 
@@ -158,19 +158,83 @@ Pact is a language written for smart contract implementation in the Kadena block
 
     Code modules encapsulate data tables for safety, ensuring only the code modules can alter the data and not outside forces [[19]](#references).
 
-#### Pact Implementation
+#### Pact Implementation <a href="#table-of-contents">^</a>
 + **Contract Tables, Keysets, & Module**
 
     Data is stored in schema-less tables in "key-rows", allowing a versioned history via the table columns. Keysets are groups of public keys used to access data, and can be specifies to be global or row-specific. Modules encapsulate data tables and keysets for data safety, and house all code. [[19]](#references).
 
-+ **Transaction Atomicity**
++ **Transaction & Contract Atomicity**
 
-    A message to the blockchain is atomic, meaning that if the message fails, the previous state before the operation is rolled-back to via the columnar history of the data table [[19]](#references).
+    A message to the blockchain is atomic, meaning that if the message fails, the previous state before the operation is rolled-back to via the columnar history of the data table. Only the full execution of the code will allow updates. This prevents the need of the good-practice of tail-calling other transactions that Solidity strives for, and Scilla enforces [[4]](#references) [[19]](#references).
 
 + **Querying Contract Data**
 
-    Data is simply exported, rather than processed in-miner.  [[19]](#references).
+    Data is simply exported, rather than processed inside miners. This alleviates out-of-gas problems where miners could use all the gas in Ethereum, resulting in imcomplete contracts.  [[19]](#references).
 
++ **Bitcoin Opcode Inspiration**
+
+    Bitcoin Script in contracts can only offer pass or fail results. However, Bitcoin's signature-verification via opcodes *CHECKSIG* & *OP_CHECKMULTISIG* inspired Pact design's keyset idea [[19]](#references).  
+
++ **LISP Syntax**
+
+    With Pact code stored directly on the ledger, code takes more time to execute than bytecode would. To counter this, Pact uses LISP *s-expression* syntax that represents the AST tree to be execute. The Pact compiler offers runtime errors and detailed errors with stack tracing  [[19]](#references).
+
+#### Pact Features Specifically Not Included <a href="#table-of-contents">^</a>
++ **Unbounded Looping & Recursion**
+
+    This is to keep the language Turing-imcomplete, and prevent errors. Bounded Looping is allowed on finite list structures [[19]](#references).
+
++ **Conditionals**
+
+    Pact does include IF statements, but suggests that programmers utilize the *enforce* that can abort the transaction [[19]](#references).
+
++ **Nulls**
+
+    Because Pact employs a database-like design, nulls are not allowed. Nulls also allow programmers to avoid issues behind why values are null. No nulls forces programmers to handle these scenarios [[19]](#references).
+
++ **Lambdas, Macros, or *eval***
+
+    While LISP does support these, Pact does not. Lambdas' anonymous functions reduce performance but can also severely complicate scopes [[19]](#references).
+
+#### Pact Code Example
+This example is taken from [The Pact Smart-Contract Language](http://kadena.io/docs/Kadena-PactWhitepaper-Oct2016.pdf) white paper. It is a simple function for an account [[19]](#references). 
+
+
+```LISP
+(define-­‐keyset 'accounts-­‐admin
+    (read-­‐keyset "accounts-­‐admin-­‐keyset"))
+    
+    (module accounts'accounts-­‐admin
+    "Simple account functionality."
+    
+    (defun create-­‐account(address keyset)
+    (insert'accounts address
+        { "balance": 0, "amount": 0, "keyset": keyset,
+           "note": "Created account"}))
+        
+    (defun transfer(src dest amount)
+      "transfer AMOUNT from SRC to DEST"
+     (with-­‐read 'accounts src
+        { "balance":= src-­‐balance
+        , "keyset":= src-­‐ks }
+      (with-­‐keyset src-­‐ks  
+       (check-­‐balance src-­‐balance amount)
+        (with-­‐read 'accounts dest { "balance":= dest-­‐balance }
+         (write 'accounts src
+                { "balance": (-­‐src-­‐balance  amount)
+                , "amount": (-­‐amount)
+                , "note": { "transfer-­‐to":  dest } })
+         (write 'accounts dest
+         { "balance": (+ dest-­‐balance amount)
+         , "amount": amount
+         , "note": { "transfer-­‐from": src } })))))
+         
+    (defun check-­‐balance(balance amount)
+      (enforce (<= amount balance) "Insufficient funds"))
+   )
+   
+   (create-­‐table 'accounts 'accounts)
+```
 
 ---
 
@@ -224,36 +288,34 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
     ```    
     It can be infered that this precaution is a similar attempt in nature to preventing contract malfunctions or exploits to that of the DAO attack, with an exploit using a recursive non-tail call. Changing the state of the contract will ensure logical steps are properly recorded.
 
-#### Vyper Implementation <a href="#table-of-contents">^</a>
+#### Vyper Features Specifically Not Included <a href="#table-of-contents">^</a>
++ **Modifiers**
 
-+ **Features Specifically not Included [[4]](#references)**
-    + **Modifiers**
+    Modifying methods increases difficulty of auditability with jumps around a file when altering a variable
 
-        Modifying methods increases difficulty of auditability with jumps around a file when altering a variable
++ **Class Inheritance**
 
-    + **Class Inheritance**
+    Inheritance complicates files and readability with inherited functions
 
-        Inheritance complicates files and readability with inherited functions
++ **Inline Assembly**
 
-    + **Inline Assembly**
+    Adding assembly into code increases auditability effort required
 
-        Adding assembly into code increases auditability effort required
++ **Function Overloading**
 
-    + **Function Overloading**
+    Multiple similar functions allows for misleading code where same-named functions could have very different outcomes with just a parameter change.
 
-        Multiple similar functions allows for misleading code where same-named functions could have very different outcomes with just a parameter change.
++ **Operator Overloading**
 
-    + **Operator Overloading**
+    Similar to function overloading, operator overloading creates uncertainty on what task will be performed.
 
-        Similar to function overloading, operator overloading creates uncertainty on what task will be performed.
++ **Recursive Calling & Infinite Length Loops**
 
-    + **Recursive Calling & Infinite Length Loops**
+    In order to set upper bounds for gas-limits, recursion is not implemented as well as the possibility of infinite-length loops.
 
-        In order to set upper bounds for gas-limits, recursion is not implemented as well as the possibility of infinite-length loops.
-
-    + **Binary Fixed Point**
-     
-        Binary fixed-points can require approximations, unlike decimal fixed-point which will have an exact value when written as a literal. 
++ **Binary Fixed Point**
+    
+    Binary fixed-points can require approximations, unlike decimal fixed-point which will have an exact value when written as a literal. 
 
 #### Vyper Testing <a href="#table-of-contents">^</a>
 Vyper is still in the process of implementing [ethereum-tester](https://github.com/ethereum/eth-tester), but will utilize this library. Command-line tools will allow function execution of contracts with event logging [[4]](#references).
@@ -266,7 +328,7 @@ Vyper can implement a crowd-fund contract in a little over 60 lines of code, inc
 
 From 'Vyper By Example' Documentation [[15]](#references)
 
-```
+```Python
 # Setup private variables (only callable from within the contract)
 
 struct Funder :
