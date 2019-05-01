@@ -71,7 +71,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
 
 + **Strong Typing**
 
-    Something interesting that vyper offers support for, is unit types. While timestamps aren't too surprising, the units wei & wei per second are implemented [[12]](#references). wei is the smallest denomination of Ether, ( 10<sup>-18</sup> of an Ether ), and named after the cryptographer Wei Dai. 
+    Something interesting that vyper offers support for, is unit types. While timestamps aren't too surprising, the units wei & wei per second are implemented [[12]](#references). wei is the smallest denomination of Ether, ( 10 <sup>-18</sup> of an Ether ), and named after the cryptographer Wei Dai.  
 
 + **Small & Understandable Code**
 + **Limited Support for Pure Functions**
