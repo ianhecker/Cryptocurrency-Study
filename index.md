@@ -198,27 +198,6 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
     Continuations can be considered "remaining computations" to do after a call to another contract. While Scilla enforces non-tail calls from transitions, it allows transitions to explicitly call a continuation post-call of another contract to perform computations [[4]](#references).
 
-    ```ML
-    (* Example code taken from Scilla Whitepaper [4] *)
-
-    (* Specifying a  continuation in a Caller contract *)
-    continuationUseResult (res : uint)
-        send(<to→owner, amount→0, tag→"main", msg→res>, MT)
-        
-    (* Using a continuation in a transition of Caller *)
-    transitionClientTransition
-        (sender : address, value : uint, tag : string)
-        (* code of the transition *)
-        send(<to→sender, amount→0,
-            tag→"main", msg→res>, UseResult)
-    
-    (* Returning a result in a callee contract  *)    
-    transitionServerTransition
-        (sender : address, value : uint, tag : string)
-        (* code of the transition *)
-        return value
-    ```
-
 + **Looping**
 
     Looping constructs are handled with recursive definitions. This allows finality of a looping definition to be proven statically during formal verification [[4]](#references). 
@@ -231,6 +210,28 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 + **Coq Proof Assistant**
 
     Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
+
+#### Scilla Code Example
+Scilla code example taken from [Scilla: A Smart Contract Intermediate-Level Language](https://arxiv.org/abs/1801.00687) [[4]](#references).
+
+```ML
+(* Specifying a  continuation in a Caller contract *)
+continuationUseResult (res : uint)
+    send(<to→owner, amount→0, tag→"main", msg→res>, MT)
+    
+(* Using a continuation in a transition of Caller *)
+transitionClientTransition
+    (sender : address, value : uint, tag : string)
+    (* code of the transition *)
+    send(<to→sender, amount→0,
+        tag→"main", msg→res>, UseResult)
+
+(* Returning a result in a callee contract  *)    
+transitionServerTransition
+    (sender : address, value : uint, tag : string)
+    (* code of the transition *)
+    return value
+```
 
 ---
 
