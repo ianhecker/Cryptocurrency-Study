@@ -23,40 +23,40 @@ This paper serves as a source of compilation on information about languages besi
         + [Serpent](#serpent)
         
 
-## Smart Contracts FIX? [^](#table-of-contents)
+## Smart Contracts
 
-### Origin of Smart Contracts [^](#table-of-contents)
+### Origin of Smart Contracts
 The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses that contracts can be embedded into both software and hardware. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when the right conditions are met [[16]](#references). 
 
 Coin parking meters are similar, in that variations of coins add time for valid parking, but is important to note that parking meters often require a third party to verify parking has become invalid. Smart contracts can allow interactions on a blockchain without the need for a third party; using mathematically-provable semantics and cryptography as the trust mechanism between mutually-distrusting peers. 
 
-### Ethereum Smart Contracts [^](#table-of-contents)
+### Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
 Languages such as: [Serpent](#serpent), [Vyper](#vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
 
-### EVM Bytecode [^](#table-of-contents)
+### EVM Bytecode
 **E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project to be run by miners on the Ethereum network. 
 
-## Smart Contract Verification [^](#table-of-contents)
-### Attacks on Smart Contracts [^](#table-of-contents)
+## Smart Contract Verification
+### Attacks on Smart Contracts
 The semantics of Smart Contracts needs to be ensured to be exactly as imagined by developers. After committing to a blockchain, the contract will be immutable. The most famous attack on the Ethereum platform:
 
 + Re-entrance Attack
     + In 2016, an exploit occured of a DAO contract, or **D**ecentralized **A**utonomous **O**rganization. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified per the original DAO contract, and was subsequently recovered through a forking of the blockchain by the Ethereum community [[9]](#references) [[10]](#references). 
 
-### Formal Verification [^](#table-of-contents)
+### Formal Verification
 In order to prevent attacks or contract errors, semantics should be proven mathematically beforehand. 
 + Scilla uses a tool called Coq to translate Scilla into a functional language called Gallina to verify semantics [[4]](#references).
 + In [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611), it  outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
 
 ---
-## Smart Contract Languages [^](#table-of-contents)
-### **Promising Languages** [^](#table-of-contents)
-### Scilla [^](#table-of-contents)
+## Smart Contract Languages
+### **Promising Languages**
+### Scilla
 Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). Per the [Scilla Documentation](https://scilla.readthedocs.io/en/latest/), it is specific to the [Zilliqa](https://zilliqa.com/) blockchain (cannot be compiled into EVM bytecode).
 
-#### Scilla Principles [^](#table-of-contents)
+#### Scilla Principles
 
 + **Separation between Computation and Communication**
 
@@ -75,7 +75,7 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
     Scilla uses CPS, or **C**ontinuation-**P**assing **S**tyle. CPS is when contracts are built as communicating automata, and calls made to one another can be performed absolutely last. This can increase difficulty due to a change in style of coding, but is provided a solution via invoked *continuations* from the execution environment. This allows translations from Solidity to Scilla. Additionally, the use of automata structures aids in analysis, testing, and verification of contracts [[4]](#references).
 
-#### Scilla Implementation [^](#table-of-contents)
+#### Scilla Implementation
 + **Implicitly declared fields**
     
     All Scilla contracts when initialized create a public and mutable field called *balance* that holds the contract's funds. This field can only be editted through explicitly moving funds to other accounts, which are held in *uints*, or 32 bit **U**nsigned **Int**egers [[4]](#references). 
@@ -126,18 +126,18 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
     Scilla does not allow calls to other contracts within its transistions, only through the sending of a message. This is to prevent another occurence of the famous $60 mil dollar DAO theft [[5]](#reference) from reoccuring. This exploit occured via a call to another contract inside of a function, which lead to contract-state manipulation in a "re-entry attack". The solution is called a *tail-call*, where other contracts are called post-transition and is now considered a best practice in Solidity [[4]](#references). 
 
-#### Scilla Formal Verification [^](#table-of-contents)
+#### Scilla Formal Verification
 + **Coq Proof Assistant**
 
     Coq Proof Assistant is a theorem prover tool with dependent-type theory used to verify programs using mathematical libraries. Scilla is being developed hand-in-hand with this tool. Semantics are modeled into Coq, using Coq's specification language called Gallina [[4]](#references).
 ---
-### Solidity [^](#table-of-contents)
+### Solidity
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
-### Vyper [^](#table-of-contents)
+### Vyper
 The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compilable to EVM bytecode [[12]](#references).
  
-#### Vyper Principles [^](#table-of-contents)
+#### Vyper Principles
 + **Security**
     
     Vyper strives to make secure contract-creation easy. As a major design principle this, as well as the Auditability principle, suggests that the language will have extensive security research for its simple expressions [[2]](#references). 
@@ -150,7 +150,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
 
     Aiming for maximum human readability, Vyper will be similar to Python with minimal syntax in favor of indentation for program scopes. Hand-in-hand is the difficulty it should take to write misleading, or incorrect code. Readers will not have to have in-depth understanding in order to spot potentially malicious or faulty contracts [[2]](#references).
 
-#### Vyper Features [^](#table-of-contents)
+#### Vyper Features
 + **Bounds & Overflow Checking**
 
     Accessing array indices will feature bounds checking, and math will offer overflow-checking [[2]](#references). With these tools, contracts can further avoid runtime errors, where both gas costs and progress would be lost for the caller after a premature contract conclusion.
@@ -177,7 +177,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
     ```    
     It can be infered that this precaution is a similar attempt in nature to preventing contract malfunctions or exploits to that of the DAO attack, with an exploit using a recursive non-tail call. Changing the state of the contract will ensure logical steps are properly recorded.
 
-#### Vyper Implementation [^](#table-of-contents)
+#### Vyper Implementation
 
 + **Features Specifically not Included [[4]](#references)**
     + **Modifiers**
@@ -208,13 +208,13 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
      
         Binary fixed-points can require approximations, unlike decimal fixed-point which will have an exact value when written as a literal. 
 
-#### Vyper Testing [^](#table-of-contents)
+#### Vyper Testing
 Vyper is still in the process of implementing [ethereum-tester](https://github.com/ethereum/eth-tester), but will utilize this library. Command-line tools will allow function execution of contracts with event logging [[4]](#references).
 ```sh
 vyper-run yourContractName.vy "yourFunction();" -i some_init_param, another_init_param
 ```
 
-#### Vyper Crowdfund Example Contract [^](#table-of-contents)
+#### Vyper Crowdfund Example Contract
 Vyper can implement a crowd-fund contract in a little over 60 lines of code, including comments and newlines.
 
 From 'Vyper By Example' Documentation [[15]](#references)
@@ -283,13 +283,13 @@ def refund():
     self.refundIndex = ind + 30
 ```
 ---
-### **Deprecated Languages** [^](#table-of-contents)
-### Bamboo [^](#table-of-contents)
+### **Deprecated Languages**
+### Bamboo
 
 Bamboo is very similar in structure to Scilla and similarly attempts to solve re-entrance problems. Bamboo has even started to produce (with limited success) EVM bytecode that "ran as expected" [[7]](#references). The OCaml compiler still remains buggy, and is now maintained by Cornell Blockchain in [this github repository](#https://github.com/CornellBlockchain/bamboo). Bamboo is only at version 0.0.03, with a year since the last commit made to the forked branch made by Cornell Blockchain [[8]](#references). 
 
 ---
-### Serpent [^](#table-of-contents)
+### Serpent
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
 Vitalik Buterin tweeted in July 2017: [[18]](#references) 
@@ -300,7 +300,7 @@ Additionally, the [ethereum/serpent](https://github.com/ethereum/serpent) github
 
     Being a low-level language, Serpent is NOT RECOMMENDED for building applications unless you really really know what you're doing. The creator recommends Solidity as a default choice, LLL if you want close-to-the-metal optimizations, or Viper if you like its features though it is still experimental.
 ---
-## References [^](#table-of-contents)
+## References
 [1] [Vitalik Buterin. A Next-Generation Smart Contract and Decentralized Application Platform, 2014.](https://cryptorating.eu/whitepapers/Ethereum/Ethereum_white_paper.pdf) 
 
 [2] [ethereum/vyper github README.md](https://github.com/ethereum/vyper)
