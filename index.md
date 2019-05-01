@@ -4,18 +4,19 @@ This paper serves as a source of compilation on information about languages besi
 + What smart contract implementation languages are out there?
     + Can they compile down into Ethereum bytecode? 
 
+---
 ### Table of Contents
 + [Ethereum Smart Contracts](#ethereum-smart-contracts)
     + [EVM Bytecode](#evm-bytecode)
 + [Smart Contract Verification](#smart-contract-verification)
 + [Smart Contract Languages](#smart-contract-languages)
-    + [Ethereum: Serpent](#ethereum-serpent)
-    + [Ethereum: Vyper](#ethereum-vyper)
     + [Solidity](#solidity)
+    + [Ethereum: Serpent](#ethereum-serpent)
+    + [Ethereum: Vyper](#ethereum-vyper)    
     + [Scilla](#scilla)
     + [Bamboo](#bamboo)
 
-
+---
 ## Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
@@ -36,7 +37,11 @@ In order to prevent attacks or contract errors semantics must be proven with pro
 + In [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611), it  outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
 + Solidity TO DO
 
+---
 ## Smart Contract Languages
+### Solidity
+Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
+
 ### Ethereum: Serpent
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
@@ -121,6 +126,8 @@ vyper-run yourContractName.vy "yourFunction();" -i some_init_param, another_init
 ```
 
 #### Vyper Crowdfund Example Contract
+Vyper can implement a crowd-fund contract in a little over 60 lines of code
+
 From 'Vyper By Example' Documentation [[15]](#references)
 
 ```
@@ -186,10 +193,7 @@ def refund():
 
     self.refundIndex = ind + 30
 ```
-
-### Solidity
-Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
-
+---
 ### Scilla
 Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). 
 
