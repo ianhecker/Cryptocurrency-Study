@@ -6,7 +6,7 @@ This paper serves as a source of compilation on information about languages besi
 
 ---
 ### Table of Contents
-+ [Smart Contracts](#smart-contracts)
++ [Smart Contracts](#smart-contracts-^)
     + [Origin of Smart Contracts](#origin-of-smart-contracts)
     + [Ethereum Smart Contracts](#ethereum-smart-contracts)
     + [EVM Bytecode](#evm-bytecode)
@@ -21,9 +21,10 @@ This paper serves as a source of compilation on information about languages besi
     + [Deprecated Languages](#deprecated-languages)    
         + [Bamboo](#bamboo)
         + [Serpent](#serpent)
-        
 
-## Smart Contracts [Home](#references)
+---        
+
+## Smart Contracts [^](#table-of-contents)
 
 ### Origin of Smart Contracts
 The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses that contracts can be embedded into both software and hardware. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when the right conditions are met [[16]](#references). 
