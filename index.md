@@ -1,5 +1,5 @@
 # Smart Contract Implementation Languages
-This paper serves as a source of compliation on information about languages used to implement smart contracts. It aims to answer the questions:
+This paper serves as a source of compliation on information about languages besides Solidity used to implement smart contracts. It aims to answer the questions:
 
 + What smart contract implementation languages are out there?
     + Can they compile down into Ethereum bytecode? 
@@ -22,7 +22,7 @@ Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode 
 Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
 
 ### EVM Bytecode
-**E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project. 
+**E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project to be run by miners on the Ethereum network. 
 
 ## Smart Contract Verification
 ### Formal Verification
@@ -56,7 +56,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
 
     Aiming for maximum human readability, Vyper will be similar to Python with minimal syntax in favor of indentation for program scopes. Hand-in-hand is the difficulty it should take to write misleading, or incorrect code. Readers will not have to have in-depth understanding in order to spot potentially malicious or faulty contracts [[2]](#references).
 
-#### Vyper Implementation
+#### Vyper Features
 + **Bounds & Overflow Checking**
 
     Accessing array indices will feature bounds checking, and math will offer overflow-checking [[2]](#references). With these tools, contracts can further avoid runtime errors, where both gas costs and progress would be lost for the caller after a premature contract conclusion.
@@ -71,10 +71,49 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
 
 + **Strong Typing**
 
-    Something interesting that vyper offers support for, is unit types. While timestamps aren't too surprising, the units Wei & Wei per second are implemented [[12]](#references). Wei is the smallest denomination of Ether, ( 10 to the <sup>-18th</sup> of an Ether ), and named after the cryptographer Wei Dai [[13]](#references).  
+    Something interesting that vyper offers support for are unit types. While timestamps aren't too surprising, the units Wei & Wei per second are among those implemented [[12]](#references). Wei is the smallest denomination of Ether, ( 10 to the <sup>-18th</sup> of an Ether ), and named after the cryptographer Wei Dai [[13]](#references).  
 
-+ **Small & Understandable Code**
++ **Small & Understandable Compiler Code**
+
 + **Limited Support for Pure Functions**
+
+    Pure functions, or functions that do not have side effects of modifying local/non-local variables or mutable reference arguments [[14]](#references). Anything marked with the following declaration is not allowed to change the state [[12]](#references). 
+    ```Vyper
+    @constant
+    ```    
+    It can be infered that this is to prevent contract malfunctions or exploits similar to the DAO attack, where a recursive non-tail call was performed. Changing the state of the contract will ensure logic steps are properly recorded.
+
+#### Vyper Implementation
+
++ **Features Specifically not Included [[4]](#references)**
+    + **Modifiers**
+
+        Modifying methods increases difficulty of auditability with jumps around a file when altering a variable
+
+    + **Class Inheritance**
+
+        Inheritance complicates files and readability with inherited functions
+
+    + **Inline Assembly**
+
+        Adding assembly into code increases auditability effort required
+
+    + **Function Overloading**
+
+        Multiple similar functions allows for misleading code where same-named functions could have very different outcomes with just a parameter change.
+
+    + **Operator Overloading**
+
+        Similar to function overloading, operator overloading creates uncertainty on what task will be performed.
+
+    + **Recursive Calling & Infinite Length Loops**
+
+        In order to set upper bounds for gas-limits, recursion is not implemented as well as the possibility of infinite-length loops.
+
+    + **Binary Fixed Point**
+     
+        Binary fixed-points can require approximations, unlike decimal fixed-point which will have an exact value when written as a literal. 
+        
 
 ### Solidity
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
@@ -108,7 +147,7 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
 
 + **Transitions**
 
-    Transitions are simliar to Solidity methods or functions, and is the lingo for a Scilla "function". This is because of the automata formatting of Scilla code and contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
+    Transitions are simliar to Solidity methods or functions, and is the lingo for a Scilla "function". This is because of the automata formatting of Scilla contracts [[4]](#references). Formally, when moving to a new state in automata, it is said you are "transitioning". 
 
     Additionally, the term transition refers to the atomicity of the computations being performed. Each transition only changes the state of the contract, not altering other parties or contracts in the process. To reiterate, Scilla contracts do not interact with other contracts during computations, only at the very beginning or end, through initiation of the contract or post-computation communication to others [[4]](#references). 
 
@@ -117,7 +156,7 @@ Scilla is an intermediate-level, Turing incomplete language designed to be compi
     + *value* : an uint of some transaction amount
     + etc.
     
-    When a transition performs a *send*, or a transaction to another entity, the final field will be either a *continuation* or the constant *MT* that specifies to call no continuation, and hence perform no more computations. 
+    When a transition performs a *send*, or a transaction to another entity, the final field will be either a *continuation* or the constant *MT* that specifies to call no continuation, and hence perform no more computations [[4]](#references). 
 
 + **Continuations**
 
@@ -188,3 +227,5 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [12] [Vyper Documentation](https://vyper.readthedocs.io/en/v0.1.0-beta.9/)
 
 [13] [Jake Frankenfield. Wei, 2018](https://www.investopedia.com/terms/w/wei.asp)
+
+[14] [Pure Functions, Wikipedia](https://en.wikipedia.org/wiki/Pure_function)
