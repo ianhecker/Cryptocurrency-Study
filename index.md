@@ -29,19 +29,52 @@ Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), [Bamb
 The semantics of Smart Contracts needs to be ensured to be exactly as imagined by developers. After committing to a blockchain, the contract will be immutable. The most famous attack on the Ethereum platform:
 
 + Re-entrance Attack
-    + In 2016, an attack on DAO, or **D**ecentralized **A**utonomous **O**rganization, was performed. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified by the DAO contract, and was subsequently recovered [[9]](#references) [[10]](#references). 
+    + In 2016, an attack occured against the DAO, or **D**ecentralized **A**utonomous **O**rganization. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified by the DAO contract, and was subsequently recovered [[9]](#references) [[10]](#references). 
 
 In order to prevent attacks or contract errors semantics must be proven with proofs beforehand. 
 + Scilla uses a tool called Coq to translate Scilla into a functional language called Gallina to verify semantics [[4]](#references).
-+ The paper [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611) outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
-+ Solidity
++ In [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611), it  outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
++ Solidity TO DO
 
 ## Smart Contract Languages
 ### Ethereum: Serpent
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
 ### Ethereum: Vyper
-Ethereum supports an open-source project of a new "pythonic" language called Vyper. This language came after the creation of Serpent. [[2]](#references)
+The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compliable to EVM bytecode [[12]](#references).
+ 
+#### Vyper Principles
++ **Security**
+    
+    Vyper strives to make secure contract-creation easy. As a major design principle this, as well as the Auditability principle, suggests that the language will have extensive research into security for its simple expressions [[2]](#references). 
+
++ **Language & Compiler Simplicity**
+
+    A compiler and language top-priority, simplicity is highly sought after. This co-aligns with Auditability's purpose of making the language simple to understand for non-contract writers [[2]](#references).
+
++ **Auditability**
+
+    Aiming for maximum human readability, Vyper will be similar to Python with minimal syntax in favor of indentation for program scopes. Hand-in-hand is the difficulty it should take to write misleading, or incorrect code. Readers will not have to have in-depth understanding in order to spot potentially malicious or faulty contracts [[2]](#references).
+
+#### Vyper Implementation
++ **Bounds & Overflow Checking**
+
+    Accessing array indices will feature bounds checking, and math will offer overflow-checking [[2]](#references). With these tools, contracts can further avoid runtime errors, where both gas costs and progress would be lost for the caller after a premature contract conclusion.
+
++ **Support for Signed Integers & Decimal Fixed-Point Numbers**
+
+    Scilla supports unsigned integers, but Vyper will additionally support signed integers and fixed-point decimal numbers [[12]](#references). 
+
++ **Decidability**
+
+    With Ethereum contracts featuring using gas per instruction, Vyper will allow precise calculations of gas consumption upper bounds of a function call [[12]](#references). Out-of-gas errors are a loss for both parties, caller and miner alike. 
+
++ **Strong Typing**
+
+    Something interesting that vyper offers support for, is unit types. While timestamps aren't too surprising, the units wei & wei per second are implemented [[12]](#references). wei is the smallest denomination of Ether, ( 10<sup>-18</sup> of an Ether ), and named after the cryptographer Wei Dai. 
+
++ **Small & Understandable Code**
++ **Limited Support for Pure Functions**
 
 ### Solidity
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
@@ -151,3 +184,5 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [10] [The DAO (Organization) Wikipedia](https://en.wikipedia.org/wiki/The_DAO_(organization)#cite_note-FT-TheDao20160517-6)
 
 [11] [Bhargavan, Karthikeyan, Antoine Delignat-Lavaud, Cédric Fournet, Anitha Gollamudi, Georges Gonthier, Nadim Kobeissi, Natalia Kulatova et al. Formal Verification of Smart Contracts: Short Paper, 2016.](https://dl.acm.org/citation.cfm?id=2993611)
+
+[12] [Vyper Documentation](https://vyper.readthedocs.io/en/v0.1.0-beta.9/)
