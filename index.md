@@ -11,6 +11,7 @@ This paper serves as a source of compilation on information about languages besi
     + [Ethereum Smart Contracts](#ethereum-smart-contracts)
     + [EVM Bytecode](#evm-bytecode)
 + [Smart Contract Verification](#smart-contract-verification)
+    + [Attacks on Smart Contracts](#attacks-on-smart-contracts)
     + [Formal Verification](#formal-verification)
 + [Smart Contract Languages](#smart-contract-languages)
     + [Solidity](#solidity)
@@ -35,13 +36,14 @@ Languages such as: [Serpent](#serpent), [Vyper](#vyper), [Bamboo](#bamboo) & [So
 **E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project to be run by miners on the Ethereum network. 
 
 ## Smart Contract Verification
-### Formal Verification
+### Attacks on Smart Contracts
 The semantics of Smart Contracts needs to be ensured to be exactly as imagined by developers. After committing to a blockchain, the contract will be immutable. The most famous attack on the Ethereum platform:
 
 + Re-entrance Attack
-    + In 2016, an attack occured against the DAO, or **D**ecentralized **A**utonomous **O**rganization. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified by the DAO contract, and was subsequently recovered [[9]](#references) [[10]](#references). 
+    + In 2016, an exploit occured of a DAO contract, or **D**ecentralized **A**utonomous **O**rganization. The DAO was created as an open-source crowd-funding platform that would vote on projects to fund. The attack used recursive re-entrance via a call to the DAO contract to siphon off a third of all the ether, 3.6 million, into a seperate DAO account. The account had a 28 day holding period, as specified per the original DAO contract, and was subsequently recovered through a forking of the blockchain by the Ethereum community [[9]](#references) [[10]](#references). 
 
-In order to prevent attacks or contract errors semantics must be proven with proofs beforehand. 
+### Formal Verification
+In order to prevent attacks or contract errors, semantics should be proven mathematically beforehand. 
 + Scilla uses a tool called Coq to translate Scilla into a functional language called Gallina to verify semantics [[4]](#references).
 + In [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611), it  outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
 
@@ -59,7 +61,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
 #### Vyper Principles
 + **Security**
     
-    Vyper strives to make secure contract-creation easy. As a major design principle this, as well as the Auditability principle, suggests that the language will have extensive research into security for its simple expressions [[2]](#references). 
+    Vyper strives to make secure contract-creation easy. As a major design principle this, as well as the Auditability principle, suggests that the language will have extensive security research for its simple expressions [[2]](#references). 
 
 + **Language & Compiler Simplicity**
 
