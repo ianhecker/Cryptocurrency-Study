@@ -6,26 +6,26 @@ This paper serves as a source of compilation on information about languages besi
 
 ---
 ### Table of Contents
-+ [Smart Contracts](#-smart-contracts)
-    + [Origin of Smart Contracts](#-origin-of-smart-contracts)
-    + [Ethereum Smart Contracts](#-ethereum-smart-contracts)
-    + [EVM Bytecode](#-evm-bytecode)
-+ [Smart Contract Verification](#-smart-contract-verification)
-    + [Attacks on Smart Contracts](#-attacks-on-smart-contracts)
-    + [Formal Verification](#-formal-verification)
-+ [Smart Contract Languages](#-smart-contract-languages)
-    + [Promising Languages](#-promising-languages)
-        + [Scilla](#-scilla)
-        + [Solidity](#-solidity)
-        + [Vyper](#-vyper)            
-    + [Deprecated Languages](#-deprecated-languages)    
-        + [Bamboo](#-bamboo)
-        + [Serpent](#-serpent)
-+ [References](#-references)
++ [Smart Contracts](#smart-contracts-)
+    + [Origin of Smart Contracts](#origin-of-smart-contracts-)
+    + [Ethereum Smart Contracts](#ethereum-smart-contracts-)
+    + [EVM Bytecode](#evm-bytecode-)
++ [Smart Contract Verification](#smart-contract-verification-)
+    + [Attacks on Smart Contracts](#attacks-on-smart-contracts-)
+    + [Formal Verification](#formal-verification-)
++ [Smart Contract Languages](#smart-contract-languages-)
+    + [Promising Languages](#promising-languages-)
+        + [Scilla](#scilla-)
+        + [Solidity](#solidity-)
+        + [Vyper](#vyper-)            
+    + [Deprecated Languages](#deprecated-languages-)    
+        + [Bamboo](#bamboo-)
+        + [Serpent](#serpent-)
++ [References](#references-)
 
 ---        
 
-## [^](#table-of-contents) Smart Contracts
+## Smart Contracts [^](#table-of-contents) 
 
 ### [^](#table-of-contents) Origin of Smart Contracts
 The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses that contracts can be embedded into both software and hardware. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when conditions are satisfied [[16]](#references). 
