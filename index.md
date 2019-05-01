@@ -1,5 +1,5 @@
 # Smart Contract Implementation Languages
-This paper serves as a source of compliation on information about languages besides Solidity used to implement smart contracts. It aims to answer the questions:
+This paper serves as a source of compilation on information about languages besides Solidity used to implement smart contracts. It aims to answer the questions:
 
 + What smart contract implementation languages are out there?
     + Can they compile down into Ethereum bytecode? 
@@ -41,7 +41,7 @@ In order to prevent attacks or contract errors semantics must be proven with pro
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
 ### Ethereum: Vyper
-The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compliable to EVM bytecode [[12]](#references).
+The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compilable to EVM bytecode [[12]](#references).
  
 #### Vyper Principles
 + **Security**
@@ -81,7 +81,7 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
     ```Vyper
     @constant
     ```    
-    It can be infered that this is to prevent contract malfunctions or exploits similar to the DAO attack, where a recursive non-tail call was performed. Changing the state of the contract will ensure logic steps are properly recorded.
+    It can be infered that this precaution is a similar attempt in nature to preventing contract malfunctions or exploits to that of the DAO attack, with an exploit using a recursive non-tail call. Changing the state of the contract will ensure logical steps are properly recorded.
 
 #### Vyper Implementation
 
@@ -113,7 +113,79 @@ The Ethereum project's language to succeed Serpent is a contract-oriented, open-
     + **Binary Fixed Point**
      
         Binary fixed-points can require approximations, unlike decimal fixed-point which will have an exact value when written as a literal. 
-        
+
+#### Vyper Testing
+Vyper is still in the process of implementing [ethereum-tester](https://github.com/ethereum/eth-tester), but will utilize this library. Command-line tools will allow function execution of contracts with event logging [[4]](#references).
+```sh
+vyper-run yourContractName.vy "yourFunction();" -i some_init_param, another_init_param
+```
+
+#### Vyper Crowdfund Example Contract
+From 'Vyper By Example' Documentation [[15]](#references)
+
+```
+# Setup private variables (only callable from within the contract)
+
+struct Funder :
+  sender: address
+  value: wei_value
+
+funders: map(int128, Funder)
+nextFunderIndex: int128
+beneficiary: address
+deadline: public(timestamp)
+goal: public(wei_value)
+refundIndex: int128
+timelimit: public(timedelta)
+
+
+# Setup global variables
+@public
+def __init__(_beneficiary: address, _goal: wei_value, _timelimit: timedelta):
+    self.beneficiary = _beneficiary
+    self.deadline = block.timestamp + _timelimit
+    self.timelimit = _timelimit
+    self.goal = _goal
+
+
+# Participate in this crowdfunding campaign
+@public
+@payable
+def participate():
+    assert block.timestamp < self.deadline, "deadline not met (yet)"
+
+    nfi: int128 = self.nextFunderIndex
+
+    self.funders[nfi] = Funder({sender: msg.sender, value: msg.value})
+    self.nextFunderIndex = nfi + 1
+
+
+# Enough money was raised! Send funds to the beneficiary
+@public
+def finalize():
+    assert block.timestamp >= self.deadline, "deadline not met (yet)"
+    assert self.balance >= self.goal, "invalid balance"
+
+    selfdestruct(self.beneficiary)
+
+# Not enough money was raised! Refund everyone (max 30 people at a time
+# to avoid gas limit issues)
+@public
+def refund():
+    assert block.timestamp >= self.deadline and self.balance < self.goal
+
+    ind: int128 = self.refundIndex
+
+    for i in range(ind, ind + 30):
+        if i >= self.nextFunderIndex:
+            self.refundIndex = self.nextFunderIndex
+            return
+
+        send(self.funders[i].sender, self.funders[i].value)
+        clear(self.funders[i])
+
+    self.refundIndex = ind + 30
+```
 
 ### Solidity
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
@@ -229,3 +301,5 @@ Bamboo is very similar in structure to Scilla and similarly attempts to solve re
 [13] [Jake Frankenfield. Wei, 2018](https://www.investopedia.com/terms/w/wei.asp)
 
 [14] [Pure Functions, Wikipedia](https://en.wikipedia.org/wiki/Pure_function)
+
+[15] ['Vyper By Example' Documentation](https://vyper.readthedocs.io/en/v0.1.0-beta.9/vyper-by-example.html#crowdfund)
