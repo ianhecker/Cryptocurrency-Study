@@ -11,8 +11,8 @@ This paper serves as a source of compilation on information about languages besi
 + [Smart Contract Verification](#smart-contract-verification)
 + [Smart Contract Languages](#smart-contract-languages)
     + [Solidity](#solidity)
-    + [Ethereum: Serpent](#ethereum-serpent)
-    + [Ethereum: Vyper](#ethereum-vyper)    
+    + [Serpent](#serpent)
+    + [Vyper](#vyper)    
     + [Scilla](#scilla)
     + [Bamboo](#bamboo)
 
@@ -20,7 +20,7 @@ This paper serves as a source of compilation on information about languages besi
 ## Ethereum Smart Contracts
 Ethereum's blockchain requires smart contracts to be compiled into EVM bytecode before they can be added to a block and ran by miners in an EVM, or **E**thereum **V**irtual **M**achine. EVM bytecode is an assembly language, using opcodes to perform instructions like allocating registers of memory or multiplying integers [[3]](#references). 
 
-Languages such as: [Serpent](#ethereum-serpent), [Vyper](#ethereum-vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
+Languages such as: [Serpent](#serpent), [Vyper](#vyper), [Bamboo](#bamboo) & [Solidity](#solidity) Are able to compile their code into EVM Bytecode. 
 
 ### EVM Bytecode
 **E**thereum **V**irtual **M**achine Bytecode is specially designed assembly code by the Ethereum project to be run by miners on the Ethereum network. 
@@ -35,17 +35,16 @@ The semantics of Smart Contracts needs to be ensured to be exactly as imagined b
 In order to prevent attacks or contract errors semantics must be proven with proofs beforehand. 
 + Scilla uses a tool called Coq to translate Scilla into a functional language called Gallina to verify semantics [[4]](#references).
 + In [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611), it  outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
-+ Solidity TO DO
 
 ---
 ## Smart Contract Languages
 ### Solidity
 Solidity has become the forefront of smart contract languages. The Ethereum project now officially supports Solidity, with its documentation available [here.](https://solidity.readthedocs.io/en/v0.5.7/) 
 
-### Ethereum: Serpent
+### Serpent
 Ethereum's first language for smart contracts was a Turing-complete language, Serpent. This language allows loops, which presents both benefits and drawbacks. Among drawbacks, chiefly is the potential for infinite loops. Because Ethereum contracts use "gas" as payment to miners for executing code, "gas" could run out via an infinite loop and error out the contract. This error would cause the caller to lose the subsequent gas [[9]](#references) [[1]](#references).
 
-### Ethereum: Vyper
+### Vyper
 The Ethereum project's language to succeed Serpent is a contract-oriented, open-source, "pythonic" language called Vyper. While Scilla focuses on mechanical formal verification of its semantics, Vyper seeks to be human-readable, with great difficulty in writing misleading or incorrect code. Readers of smart contracts are catered-to; they'll be able to understand Vyper code without much prior experience [[2]](#references). With support from the Ethereum project, Vyper will be compilable to EVM bytecode [[12]](#references).
  
 #### Vyper Principles
@@ -126,7 +125,7 @@ vyper-run yourContractName.vy "yourFunction();" -i some_init_param, another_init
 ```
 
 #### Vyper Crowdfund Example Contract
-Vyper can implement a crowd-fund contract in a little over 60 lines of code
+Vyper can implement a crowd-fund contract in a little over 60 lines of code, including comments and newlines.
 
 From 'Vyper By Example' Documentation [[15]](#references)
 
