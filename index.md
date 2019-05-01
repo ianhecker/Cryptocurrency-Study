@@ -22,8 +22,6 @@ This paper serves as a source of compilation on information about languages besi
         + [Bamboo](#bamboo)
         + [Serpent](#serpent)
         
----
-
 
 ## Smart Contracts FIX? [^](#table-of-contents)
 
