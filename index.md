@@ -22,8 +22,8 @@ This paper serves as a source of compilation on information about languages besi
         + [Bamboo](#bamboo)
         + [Serpent](#serpent)
         
-
 ---
+
 ## Smart Contracts [^](#table-of-contents)
 ### Origin of Smart Contracts [^](#table-of-contents)
 The original concept of smart contracts can be credited to Nick Szabo in 1997. In [The Idea of Smart Contracts](http://www.fon.hum.uva.nl/rob/Courses/InformationInSpeech/CDROM/Literature/LOTwinterschool2006/szabo.best.vwh.net/idea.html) Szabo discusses that contracts can be embedded into both software and hardware. He champions the vending machine as the original ancestor to contracts; accepting coins and dispensing goods when the right conditions are met [[16]](#references). 
@@ -51,11 +51,8 @@ In order to prevent attacks or contract errors, semantics should be proven mathe
 + In [Formal Verification of Smart Contracts](https://dl.acm.org/citation.cfm?id=2993611), it  outlines a framework to analyze and verify contracts' runtime and correctness through translation to F*, a functional language [[11]](#references). 
 
 ---
-
 ## Smart Contract Languages [^](#table-of-contents)
-
 ### **Promising Languages** [^](#table-of-contents)
-
 ### Scilla [^](#table-of-contents)
 Scilla is an intermediate-level, Turing incomplete language designed to be compiled from a higher-level language, and then compiled further into executable bytecode. This language was proposed by a team of researchers as a remedy to smart-contract implementation language failures, such as the famous DAO Ethereum theft from a non-tail call in a function to another contract [[4]](#references)[[5]](#references). Scilla aims to offer formal verification of smart contracts before their immmutable addition to the blockchain [[6]](#references). Per the [Scilla Documentation](https://scilla.readthedocs.io/en/latest/), it is specific to the [Zilliqa](https://zilliqa.com/) blockchain (cannot be compiled into EVM bytecode).
 
