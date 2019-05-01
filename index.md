@@ -301,8 +301,11 @@ Vitalik Buterin tweeted in July 2017: [[18]](#references)
 Additionally, the [ethereum/serpent](https://github.com/ethereum/serpent) github repository states in the README as of 2017: [[19]](#references)
 
     Being a low-level language, Serpent is NOT RECOMMENDED for building applications unless you really really know what you're doing. The creator recommends Solidity as a default choice, LLL if you want close-to-the-metal optimizations, or Viper if you like its features though it is still experimental.
+
 ---
+
 ## References <a href="#table-of-contents">^</a>
+
 [1] [Vitalik Buterin. A Next-Generation Smart Contract and Decentralized Application Platform, 2014.](https://cryptorating.eu/whitepapers/Ethereum/Ethereum_white_paper.pdf) 
 
 [2] [ethereum/vyper github README.md](https://github.com/ethereum/vyper)
